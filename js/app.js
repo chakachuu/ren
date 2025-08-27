@@ -426,8 +426,7 @@ async function init(){
       const mm = (m<10 ? '0' : '') + m;
       return `${h}:${mm} ${ampm}`;
     }
-    function inWitchWindow(d){ return d.getHours() === 3 && d.getMinutes() < 30; } right?
-}
+    function inWitchWindow(d){ return d.getHours() === 3 && d.getMinutes() < 30; }
 
     function enterWitch(){
       const current = document.documentElement.getAttribute('data-variant');
