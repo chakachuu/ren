@@ -441,8 +441,8 @@ async function init(){
       document.documentElement.setAttribute('data-variant','witch');
       setLabelFromState();
 
-      if (EYEBROW) EYEBROW.textContent = `Introducing : it's currently ${fmtTime(new Date())}`;
-      if (HERO)    HERO.textContent = 'WITCHING HOUR';
+      if (EYEBROW) EYEBROW.textContent = `it's currently ${fmtTime(new Date())}`;
+      if (HERO)    HERO.textContent = 'THE WITCHING HOUR';
 
       if (typeof stopTypewriter === 'function') stopTypewriter();
       if (TYPE){
