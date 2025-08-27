@@ -47,4 +47,18 @@ A minimalist, Apple-style personal site with **Starlight** / **Space Gray** them
 
 ## License
 
-Do whatever, just don’t ship it ugly.
+This project ships under the **Dumbass License v1.0**:
+
+- ✅ You can: fork it, yoink it, remix it, ship it, flex it.
+- ✅ You may roast the code. I do it daily.
+- ❗ You must: credit **Ren** somewhere visible (tattoos acceptable but not required).
+- 🚫 You may not: ship it ugly, add autoplay carousels, or summon 47 cookie popups.
+- 🧪 If it breaks: that’s a feature. If it works: that’s a miracle. If it’s both: ship it.
+- ☕ If you make $$$: buy me a coffee or at least pretend to feel guilty.
+- 🧑‍⚖️ If your lawyer asks: it’s **MIT**… with vibes.
+
+### Lawyers’ translation (boring but real)
+- **Code:** MIT — see [`LICENSE`](LICENSE).  
+- **Assets:** not MIT. `logo.svg` + any images/audio aren’t granted for reuse.  
+  `1800.mp3` is demo-only; don’t redistribute.  
+  Brand icons/logos are trademarks of their owners.  
