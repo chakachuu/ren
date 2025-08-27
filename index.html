@@ -555,7 +555,7 @@ document.addEventListener('keydown', function(e){
         var cur=el.textContent||'';
         (function back(){ if(cur.length===0){ return typeCTA(); } cur=cur.slice(0,-1); el.textContent=cur; setTimeout(back, 22); })();
         function typeCTA(){
-          var prefix='DONATE PLASMAAAA NOWWWW — ';
+          var prefix='ironmouse 💖 immune deficiency foundation — ';
           var i=0; el.textContent='';
           (function t(){ if(i<prefix.length){ el.textContent += prefix.charAt(i++); setTimeout(t, 50); } else { typeLink(); } })();
         }
