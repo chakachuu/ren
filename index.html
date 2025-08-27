@@ -10,7 +10,7 @@
 /* ================================================================
    Tokens & Themes
    data-theme: starlight (light), spacegray (dark)
-   data-variant: mouse (Ironmouse palette)
+   data-variant: mouse (Ironmouse), emo (Ren-specified palette)
 ================================================================= */
 :root{
   --bg:#f5f3ef; --text:#1d1d1f; --muted:#6e6e73; --border:rgba(0,0,0,.12);
@@ -31,6 +31,20 @@
   --link:#F2059F; --accent:#F2059F;
   --shadow:0 14px 36px rgba(166,3,93,.35);
   --focus:0 0 0 3px rgba(242,5,159,.45);
+}
+/* Emo — EXACT palette you sent:
+   #472e62, #000000, #413b47, #00375b, #565656 */
+[data-variant="emo"]{
+  --bg:#000000;          /* black */
+  --text:#eaeaec;
+  --muted:#565656;       /* muted text */
+  --border:rgba(255,255,255,.12);
+  --elev:#1a181d;        /* subtle lift */
+  --card:#413b47;        /* charcoal-plum */
+  --link:#00375b;        /* deep blue */
+  --accent:#472e62;      /* deep purple */
+  --shadow:0 16px 42px rgba(0,0,0,.7);
+  --focus:0 0 0 3px rgba(71,46,98,.45);
 }
 
 *{box-sizing:border-box}
@@ -60,6 +74,7 @@ header{position:sticky; top:0; z-index:50; backdrop-filter:saturate(160%) blur(1
 .link:hover{background:rgba(0,0,0,.06)}
 [data-theme="spacegray"] .link:hover{background:rgba(255,255,255,.08)}
 [data-variant="mouse"] .link:hover{background:rgba(242,5,159,.12)}
+[data-variant="emo"] .link:hover{background:rgba(255,255,255,.08)}
 .toggle{display:inline-flex; align-items:center; gap:8px; padding:6px 12px; border-radius:999px; border:1px solid var(--border); background:transparent; color:var(--muted); cursor:pointer}
 .toggle .dot{width:14px; height:14px; border-radius:50%; background:var(--accent)}
 
@@ -176,7 +191,7 @@ footer{padding:36px 0 80px; color:var(--muted); border-top:1px solid var(--borde
     </a>-->
     <a class="social" href="https://instagram.com/chakachuu" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
       <!-- Instagram icon -->
-      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Instagram</title><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg>
+      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Instagram</title><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.59"/>
     </a>
     <a class="social" href="https://github.com/chakachuu" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
       <!-- GitHub icon -->
@@ -267,48 +282,105 @@ footer{padding:36px 0 80px; color:var(--muted); border-top:1px solid var(--borde
 [03:12.39] pretty darn cool right?
 </script>
 
+<!-- Audio + LRC for Emo lyric sync -->
+<audio id="emoAudio"
+  src="https://raw.githubusercontent.com/chakachuu/ren/main/dmci.mp3"
+  crossorigin="anonymous" preload="metadata" playsinline style="display:none"></audio>
+<script id="emoLRC" type="text/plain">
+[00:00.91]I got your picture
+[00:02.36]I'm coming with you
+[00:03.65]Dear Maria, count me in
+[00:06.06]There's a story at the bottom of this bottle
+[00:10.03]And I'm the pen
+[00:12.95]
+[00:23.35]When the lights go off
+[00:25.13]I wanna watch the way you
+[00:26.72]Take the stage by storm
+[00:28.64]The way you wrap those boys around your finger
+[00:32.20]Go on and play the leader
+[00:34.30]'Cause you know it's what you're good at
+[00:36.92]The low road for the fast track
+[00:39.62]Make every second last
+[00:43.03]'Cause I got your picture
+[00:44.69]I'm coming with you
+[00:46.08]Dear Maria, count me in
+[00:48.77]There's a story at the bottom of this bottle
+[00:52.45]And I'm the pen
+[00:53.80]Make it count when I'm the one
+[00:57.03]Who's selling you out
+[00:59.14]'Cause it feels like stealing hearts
+[01:01.66]Calling your name from the crowd
+[01:06.42]
+[01:14.89]Live and let live, you'll be the show girl of the home team
+[01:19.78]I'll be the narrator
+[01:23.10]Telling another tale of the American dream
+[01:26.89]I see your name in lights
+[01:29.86]We can make you a star
+[01:31.84]Girl, we'll take the world by storm
+[01:34.19]It isn't that hard
+[01:36.29]'Cause I got your picture
+[01:37.83]I'm coming with you
+[01:39.10]Dear Maria, count me in
+[01:41.66]There's a story at the bottom of this bottle
+[01:45.69]And I'm the pen
+[01:47.17]Make it count when I'm the one
+[01:50.09]Who's selling you out
+[01:52.44]'Cause it feels like stealing hearts
+[01:54.70]Calling your name from the crowd
+[01:57.61]Whoa
+[02:00.56]
+[02:04.29]Ha ha
+[02:09.21]Take a breath, don't it sound so easy
+[02:11.62]Never had a doubt
+[02:12.60]Now I'm going crazy watching from the floor
+[02:19.74]Take a breath and let the rest come easy
+[02:22.05]Never settle down
+[02:22.91]'Cause the cash flow leaves me always wanting more
+[02:29.42]'Cause I got your picture
+[02:30.72]I'm coming with you
+[02:32.25]Dear Maria, count me in
+[02:34.82]There's a story at the bottom of this bottle
+[02:38.56]And I'm the pen
+[02:40.10]Make it count when I'm the one
+[02:43.20]Who's selling you out
+[02:45.35]'Cause it feels like stealing hearts
+[02:47.78]Calling your name from the crowd
+[02:50.59]'Cause I got your picture
+[02:51.85]I'm coming with you
+[02:53.24]Dear Maria, count me in
+[02:56.04]There's a story at the bottom of this bottle
+[02:59.77]
+</script>
+
 <script>
 (function(){
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
-   
-// --- Right-click & snooping deterrents (speed bumps, not force fields) ---
+
+// --- Right-click & snooping deterrents ---
 function isEditable(target){
   return !!(target && target.closest('input, textarea, [contenteditable=""], [contenteditable="true"]'));
 }
-
-// 1) Block context menu & drag (except in editable fields)
 ['contextmenu','dragstart'].forEach(function(type){
   document.addEventListener(type, function(e){
     if (isEditable(e.target)) return;
     e.preventDefault();
   }, {capture:true});
 });
-
-// 2) Block right/middle mouse actions (context menu often sneaks via auxclick)
 ['mousedown','auxclick'].forEach(function(type){
   document.addEventListener(type, function(e){
     if (isEditable(e.target)) return;
-    if (e.button === 2 || e.button === 1) { // 2=right, 1=middle
-      e.preventDefault();
-    }
+    if (e.button === 2 || e.button === 1) { e.preventDefault(); }
   }, {capture:true});
 });
-
-// 3) Block common “peek at code” shortcuts (still bypassable, but annoying)
 document.addEventListener('keydown', function(e){
   if (isEditable(e.target)) return;
   var k = (e.key || '').toLowerCase();
-
   var blocked =
-    k === 'f12' ||                               // DevTools
-    ((e.ctrlKey || e.metaKey) && k === 'u') ||   // View Source
-    ((e.ctrlKey || e.metaKey) && k === 's') ||   // Save page
-    ((e.ctrlKey || e.metaKey) && e.shiftKey && (k === 'i' || k === 'j' || k === 'c')); // DevTools panes
-
-  if (blocked){
-    e.preventDefault();
-    e.stopImmediatePropagation();
-  }
+    k === 'f12' ||
+    ((e.ctrlKey || e.metaKey) && k === 'u') ||
+    ((e.ctrlKey || e.metaKey) && k === 's') ||
+    ((e.ctrlKey || e.metaKey) && e.shiftKey && (k === 'i' || k === 'j' || k === 'c'));
+  if (blocked){ e.preventDefault(); e.stopImmediatePropagation(); }
 }, {capture:true});
 
   function init(){
@@ -316,18 +388,19 @@ document.addEventListener('keydown', function(e){
       // Year
       var y=document.getElementById('y'); if(y) y.textContent=new Date().getFullYear();
 
-      // Eyebrow: Introducing ↔ Now Playing
+      // Eyebrow label
       var eyebrow=document.getElementById('eyebrow');
-      function setNowPlaying(on){
+      function setNowPlaying(on, labelText){
         if(!eyebrow) return;
         if(on){
-          eyebrow.innerHTML = '<strong id="npNow" class="flicker">Now Playing</strong> | 1-800  - bbno$, Ironmouse';
+          var text = labelText || '1-800  - bbno$, Ironmouse';
+          eyebrow.innerHTML = '<strong id="npNow" class="flicker">Now Playing</strong> | ' + text;
         }else{
           eyebrow.textContent = 'Introducing';
         }
       }
 
-      // Theme toggle (Auto ↔ Starlight ↔ Space Gray). Label shows “Mousey” when variant active.
+      // Theme toggle
       var KEY='ny_theme_v2';
       var label=document.getElementById('themeLabel');
       var toggle=document.getElementById('themeToggle');
@@ -336,8 +409,10 @@ document.addEventListener('keydown', function(e){
       function system(){return media.matches?'spacegray':'starlight'}
       function applyTheme(){ var t=(mode==='auto'? system(): mode); document.documentElement.setAttribute('data-theme', t); }
       function setLabelFromState(){
-        if(document.documentElement.getAttribute('data-variant')==='mouse'){ if(label) label.textContent='Mousey'; }
-        else { if(label) label.textContent=(mode==='spacegray'?'Space Gray': mode.charAt(0).toUpperCase()+mode.slice(1)); }
+        var v=document.documentElement.getAttribute('data-variant');
+        if(v==='mouse'){ if(label) label.textContent='Mousey'; return; }
+        if(v==='emo'){ if(label) label.textContent='Emo'; return; }
+        if(label) label.textContent=(mode==='spacegray'?'Space Gray': mode.charAt(0).toUpperCase()+mode.slice(1));
       }
       applyTheme(); setLabelFromState();
       media.addEventListener('change', function(){ if(mode==='auto'){ applyTheme(); setLabelFromState(); } });
@@ -415,7 +490,7 @@ document.addEventListener('keydown', function(e){
         }, 3600);
       })();
 
-      // ===== LRC lyric sync with fade =====
+      // ===== LRC lyric sync (generic) =====
       var lyricCtx={ on:false, audio:null, h1:null, orig:'', update:null, lines:[], lastIndex:-1 };
       function parseLRC(txt){
         var out=[]; if(!txt) return out;
@@ -434,9 +509,9 @@ document.addEventListener('keydown', function(e){
         out.sort(function(a,b){return a.t-b.t});
         return out;
       }
-      function startLyric(){
-        var a=document.getElementById('mouseyAudio');
-        var s=document.getElementById('mouseyLRC');
+      function startLyric(audioId, lrcId){
+        var a=document.getElementById(audioId);
+        var s=document.getElementById(lrcId);
         var h=document.getElementById('heroTitle');
         if(!a||!s||!h) return;
         var txt=(s.textContent||s.innerText||'').trim();
@@ -454,7 +529,6 @@ document.addEventListener('keydown', function(e){
           if(idx!==lyricCtx.lastIndex){
             lyricCtx.lastIndex=idx;
             var newText = idx>=0 ? lyricCtx.lines[idx].text : lyricCtx.orig;
-            // fade out → swap → fade in
             lyricCtx.h1.style.opacity=0;
             setTimeout(function(){
               lyricCtx.h1.textContent=newText;
@@ -481,43 +555,35 @@ document.addEventListener('keydown', function(e){
         lyricCtx.on=false;
       }
 
-      // ===== Beat-synced "Now Playing" flicker (Web Audio) =====
+      // ===== Beat-synced "Now Playing" flicker (generic) =====
       var beat={ ctx:null, src:null, analyser:null, data:null, ema:0, last:0, raf:0, active:false };
-      function ensureAudioGraph(){
-        var a = document.getElementById('mouseyAudio');
-        if(!a) return;
-
+      function ensureAudioGraph(audioEl){
+        if(!audioEl) return;
         var AC = window.AudioContext || window.webkitAudioContext;
         if(!AC) return;
         if(!beat.ctx) beat.ctx = new AC();
         if(beat.ctx.state === 'suspended'){ beat.ctx.resume().catch(()=>{}); }
 
-        if(!beat.src){
-          try{
-            beat.src = beat.ctx.createMediaElementSource(a);
-            beat.analyser = beat.ctx.createAnalyser();
-            beat.analyser.fftSize = 1024;
-            beat.analyser.smoothingTimeConstant = 0.85;
-            beat.data = new Uint8Array(beat.analyser.fftSize);
-
-            // connect for analysis AND to speakers
-            beat.src.connect(beat.analyser);
-            beat.src.connect(beat.ctx.destination);
-          }catch(e){
-            // ignore duplicate source creation errors
-          }
-        }
+        try{
+          if(beat.src){ try{beat.src.disconnect();}catch(_e){} }
+          beat.src = beat.ctx.createMediaElementSource(audioEl);
+          beat.analyser = beat.ctx.createAnalyser();
+          beat.analyser.fftSize = 1024;
+          beat.analyser.smoothingTimeConstant = 0.85;
+          beat.data = new Uint8Array(beat.analyser.fftSize);
+          beat.src.connect(beat.analyser);
+          beat.src.connect(beat.ctx.destination);
+        }catch(e){ /* ignore duplicate source creation errors */ }
       }
       function pulseNowPlaying(){
         var np=document.getElementById('npNow');
         if(!np) return;
-        np.classList.remove('beat'); // restart anim
-        void np.offsetWidth; // reflow
+        np.classList.remove('beat'); void np.offsetWidth;
         np.classList.add('beat');
         setTimeout(function(){ np && np.classList.remove('beat'); }, 140);
       }
-      function startBeat(){
-        ensureAudioGraph();
+      function startBeat(audioEl){
+        ensureAudioGraph(audioEl);
         if(!beat.analyser) return;
         beat.active=true; beat.ema=0; beat.last=0;
         function loop(){
@@ -534,22 +600,20 @@ document.addEventListener('keydown', function(e){
         }
         beat.raf=requestAnimationFrame(loop);
       }
-      function stopBeat(){
-        beat.active=false;
-        if(beat.raf) cancelAnimationFrame(beat.raf);
-      }
+      function stopBeat(){ beat.active=false; if(beat.raf) cancelAnimationFrame(beat.raf); }
 
-      // ===== Variant switching + Mousey takeover =====
+      // ===== Variant switching helpers =====
       function smoothVariantSwitch(apply){ document.documentElement.classList.add('anim-colors'); apply(); setTimeout(function(){ document.documentElement.classList.remove('anim-colors'); }, 800); }
-      function tryPlayAudio(){
-        var a=document.getElementById('mouseyAudio'); if(!a) return;
-        a.play().catch(function(){ /* blocked? user needs a gesture */ });
-      }
+      function tryPlayAudio(el){ if(!el) return; el.play().catch(function(){}); }
+
+      // Mousey takeover (unchanged logic; uses generic lyric/beat now)
       function mouseTakeover(){
         if(document.documentElement.getAttribute('data-variant')==='mouse') return;
         smoothVariantSwitch(function(){ document.documentElement.setAttribute('data-variant','mouse'); setLabelFromState(); });
-        setNowPlaying(true);
-        startLyric(); startBeat(); tryPlayAudio();
+        setNowPlaying(true, '1-800  - bbno$, Ironmouse');
+        stopLyric(); stopBeat();
+        startLyric('mouseyAudio','mouseyLRC');
+        var a=document.getElementById('mouseyAudio'); startBeat(a); tryPlayAudio(a);
         stopTypewriter();
         var el=document.getElementById('typewriter'); if(!el) return;
         el.classList.remove('no-caret');
@@ -569,23 +633,51 @@ document.addEventListener('keydown', function(e){
           (function tl(){ if(j<link.length){ a.textContent+=link.charAt(j++); setTimeout(tl,42);} })();
         }
       }
+
+      // Emo takeover
+      function emoTakeover(){
+        if(document.documentElement.getAttribute('data-variant')==='emo') return;
+        smoothVariantSwitch(function(){ document.documentElement.setAttribute('data-variant','emo'); setLabelFromState(); });
+        setNowPlaying(true, 'Dear Maria Count Me In - All Time Low');
+        stopLyric(); stopBeat();
+
+        // Lyrics + beat to emo audio
+        startLyric('emoAudio','emoLRC');
+        var a=document.getElementById('emoAudio'); startBeat(a); tryPlayAudio(a);
+
+        // Replace the typewriter area with your slogan (no link)
+        var el=document.getElementById('typewriter'); if(!el) return;
+        el.classList.remove('no-caret');
+        var txt='ITS NOT JUST A PHASE MOM!, ITS A LIFESTYLE';
+        el.textContent='';
+        (function t(i){ if(i>=txt.length) return; el.textContent += txt.charAt(i); setTimeout(function(){ t(i+1); }, 42); })(0);
+      }
+
+      // Exit any variant
       function mouseRelease(){
-        if(document.documentElement.getAttribute('data-variant')!=='mouse') return;
+        var v = document.documentElement.getAttribute('data-variant');
+        if(!v) return;
         smoothVariantSwitch(function(){ document.documentElement.removeAttribute('data-variant'); setLabelFromState(); });
         setNowPlaying(false);
         stopLyric(); stopBeat();
-        var a=document.getElementById('mouseyAudio'); if(a){ a.pause(); }
+        var a1=document.getElementById('mouseyAudio'); if(a1){ a1.pause(); }
+        var a2=document.getElementById('emoAudio');    if(a2){ a2.pause(); }
         var el=document.getElementById('typewriter');
         if(el){ el.textContent=''; el.classList.remove('no-caret'); }
         startTypewriter();
       }
 
-      // ===== Mobile/desktop unlock: first tap/click primes audio & context =====
+      // Prime audio context on first gesture
       (function primeAudioOnce(){
-        var a=document.getElementById('mouseyAudio'); if(!a) return;
+        var a1=document.getElementById('mouseyAudio');
+        var a2=document.getElementById('emoAudio');
         function unlock(){
-          a.play().then(function(){ a.pause(); a.currentTime=0; }).catch(function(){});
-          ensureAudioGraph(); // build/resume AudioContext from a user gesture
+          [a1,a2].forEach(function(a){
+            if(!a) return;
+            a.play().then(function(){ a.pause(); a.currentTime=0; }).catch(function(){});
+          });
+          // build/resume AudioContext from a user gesture
+          ensureAudioGraph(a1||a2);
           window.removeEventListener('pointerdown', unlock, true);
           window.removeEventListener('touchstart', unlock, true);
           window.removeEventListener('click', unlock, true);
@@ -628,6 +720,21 @@ document.addEventListener('keydown', function(e){
         logo.addEventListener('click', onTap);
         logo.addEventListener('touchstart', onTap, {passive:true});
       }
+
+      // About pill 5-tap → Emo mode
+      (function aboutFiveTap(){
+        var aboutBtn = document.querySelector('.cta a[href="#about"]');
+        if(!aboutBtn) return;
+        var taps = 0, tmr = null, WINDOW_MS = 650;
+        function reset(){ taps = 0; }
+        function onTap(){
+          clearTimeout(tmr); taps++;
+          if(taps === 5){ taps = 0; emoTakeover(); return; }
+          tmr = setTimeout(reset, WINDOW_MS);
+        }
+        aboutBtn.addEventListener('click', onTap);
+        aboutBtn.addEventListener('touchstart', onTap, {passive:true});
+      })();
 
       // confetti
       function confetti(){
