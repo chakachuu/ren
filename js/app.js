@@ -141,8 +141,7 @@ async function init(){
       lyricCtx.update=function(){
         var t=lyricCtx.audio.currentTime*1000;
         var idx=-1;
-        for(var i=0;i<li
-nes.length;i++){ if(lyricCtx.lines[i].t<=t) idx=i; else break; }
+        for(var i=0;i<lyricCtx.lines.length;i++){ if(lyricCtx.lines[i].t<=t) idx=i; else break; }
         if(idx!==lyricCtx.lastIndex){
           lyricCtx.lastIndex=idx;
           var newText = idx>=0 ? lyricCtx.lines[idx].text : lyricCtx.orig;
@@ -217,8 +216,8 @@ nes.length;i++){ if(lyricCtx.lines[i].t<=t) idx=i; else break; }
 
     // ===== Load LRC files upfront =====
     const [mouseyLrc, emoLrc] = await Promise.all([
-      fetch('assets/lrc/1800.lrc').then(r=>r.text()).catch(()=>''),  // keep your 1800 lyrics here
-      fetch('assets/lrc/emo.lrc').then(r=>r.text()).catch(()=>''),   // and your emo track lyrics here
+      fetch('assets/lrc/1800.lrc').then(r=>r.text()).catch(()=>''),  // 1800 lyrics
+      fetch('assets/lrc/emo.lrc').then(r=>r.text()).catch(()=>''),   // emo lyrics
     ]);
 
     // ===== Mousey takeover =====
@@ -256,7 +255,7 @@ nes.length;i++){ if(lyricCtx.lines[i].t<=t) idx=i; else break; }
     function emoTakeover(){
       if(document.documentElement.getAttribute('data-variant')==='emo') return;
       smoothVariantSwitch(function(){ document.documentElement.setAttribute('data-variant','emo'); setLabelFromState(); });
-      setNowPlaying(true, 'Dear Maria Count Me In - All Time Low'); // change label if your track differs
+      setNowPlaying(true, 'Dear Maria Count Me In - All Time Low');
       stopTypewriter();
       stopLyric(); stopBeat();
       var a=document.getElementById('emoAudio');
@@ -288,6 +287,8 @@ nes.length;i++){ if(lyricCtx.lines[i].t<=t) idx=i; else break; }
       if(el){ el.textContent=''; el.classList.remove('no-caret'); }
       startTypewriter();
       document.body.classList.remove('crt-on'); // ensure CRT off if any
+      clearInterval(witchTitleTimer);           // stop title flicker if active
+      document.title = defaultTitle;
     }
 
     // ===== prime audio on first gesture =====
@@ -324,7 +325,7 @@ nes.length;i++){ if(lyricCtx.lines[i].t<=t) idx=i; else break; }
         if(buffer.endsWith('1800')){ mouseTakeover(); buffer=''; return; }  // enter
         if(buffer.endsWith('nyan')){ mouseRelease(); buffer=''; return; }   // exit
         if(buffer.endsWith('meow')){ buffer=''; confetti(); return; }
-        // secret CRT trigger: "glitch"
+        // secret CRT trigger: "glitch" (8s)
         if(buffer.endsWith('glitch')){
           document.body.classList.add('crt-on');
           setTimeout(()=> document.body.classList.remove('crt-on'), 8000);
@@ -410,6 +411,8 @@ nes.length;i++){ if(lyricCtx.lines[i].t<=t) idx=i; else break; }
     var TYPE = document.getElementById('typewriter');
     var EYEBROW = document.getElementById('eyebrow');
     var ORIG_TITLE = HERO ? HERO.textContent : 'Ren\'s Humble Abode';
+    var defaultTitle = document.title || 'lmao you actually came';
+    var witchTitleTimer;
 
     function fmtTime(d){
       let h = d.getHours(), m = d.getMinutes();
@@ -434,12 +437,22 @@ nes.length;i++){ if(lyricCtx.lines[i].t<=t) idx=i; else break; }
       if (typeof stopTypewriter === 'function') stopTypewriter();
       if (TYPE){
         TYPE.classList.add('no-caret');
-        TYPE.textContent = `no, but seriously why would u open this site at ${fmtTime(new Date())}? go to sleep! maybe drink some water too, can't sleep? ok`;
+        TYPE.textContent = `no, but seriously why would u open this site at ${fmtTime(new Date())}? go to sleep! maybe drink some water too.`;
       }
 
-      // 🔴 enable CRT glitch during witching hour
+      // CRT glitch during witching hour
       document.body.classList.add('crt-on');
+
+      // Creepy tab title flicker
+      clearInterval(witchTitleTimer);
+      document.title = "👁️ THE WITCHING HOUR 👁️";
+      witchTitleTimer = setInterval(()=>{
+        document.title = (document.title === "👁️ THE WITCHING HOUR 👁️")
+          ? "IT'S 3AM... GO TO SLEEP"
+          : "👁️ THE WITCHING HOUR 👁️";
+      }, 4000);
     }
+
     function exitWitch(){
       if(document.documentElement.getAttribute('data-variant')!=='witch') return;
       document.documentElement.removeAttribute('data-variant');
@@ -454,9 +467,11 @@ nes.length;i++){ if(lyricCtx.lines[i].t<=t) idx=i; else break; }
       }
       if (typeof startTypewriter === 'function') startTypewriter();
 
-      // 🟢 disable CRT when leaving witch mode
       document.body.classList.remove('crt-on');
+      clearInterval(witchTitleTimer);
+      document.title = defaultTitle;
     }
+
     function checkWitchingHour(){
       const now = new Date();
       if (inWitchWindow(now)) enterWitch(); else exitWitch();
@@ -466,6 +481,10 @@ nes.length;i++){ if(lyricCtx.lines[i].t<=t) idx=i; else break; }
     document.addEventListener('visibilitychange', () => { if (!document.hidden) checkWitchingHour(); });
 
     // ===== helpers =====
-    function smoothVariantSwitch(apply){ document.documentElement.classList.add('anim-colors'); apply(); setTimeout(function(){ document.documentElement.classList.remove('anim-colors'); }, 800); }
+    function smoothVariantSwitch(apply){
+      document.documentElement.classList.add('anim-colors');
+      apply();
+      setTimeout(function(){ document.documentElement.classList.remove('anim-colors'); }, 800);
+    }
   } catch(err){ console.error('init error', err); }
 }
