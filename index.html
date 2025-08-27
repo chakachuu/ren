@@ -117,15 +117,6 @@ footer{padding:36px 0 80px; color:var(--muted); border-top:1px solid var(--borde
 .gremlin .panel{ animation:wob 3.2s ease-in-out infinite }
 @keyframes wob{0%{transform:rotate(0)}50%{transform:rotate(.35deg)}100%{transform:rotate(0)}}
 
-/* background viz layer for mousey */
-body::before {
-  content:"";
-  position:fixed;
-  inset:0;
-  z-index:-1;
-  pointer-events:none;
-  transition:background .25s ease;
-}
 </style>
 </head>
 <body>
@@ -547,44 +538,7 @@ document.addEventListener('keydown', function(e){
         beat.active=false;
         if(beat.raf) cancelAnimationFrame(beat.raf);
       }
-// ===== Background visualizer =====
-var viz = { active:false, raf:0 };
 
-function startViz(){
-  viz.active = true;
-  function loop(){
-    if(!viz.active || !beat.analyser) return;
-    beat.analyser.getByteFrequencyData(beat.data);
-    var low = 0, mid = 0, hi = 0;
-    var len = beat.data.length;
-    for (var i=0;i<len;i++){
-      var val = beat.data[i]/255;
-      if(i < len/3) low += val;
-      else if(i < 2*len/3) mid += val;
-      else hi += val;
-    }
-    low /= (len/3); mid /= (len/3); hi /= (len/3);
-
-    // scale to colors (play with these)
-    var c1 = `rgba(248,89,136,${0.25+low*0.7})`;   // pink low
-    var c2 = `rgba(217,145,212,${0.25+mid*0.7})`;  // purple mid
-    var c3 = `rgba(250,92,217,${0.25+hi*0.7})`;    // magenta hi
-
-    document.body.style.setProperty("--bg-viz",
-      `radial-gradient(circle at 50% 40%, ${c1}, ${c2}, ${c3})`);
-
-    document.body.style.backgroundImage = "var(--bg-viz)";
-    viz.raf = requestAnimationFrame(loop);
-  }
-  viz.raf = requestAnimationFrame(loop);
-}
-
-function stopViz(){
-  viz.active = false;
-  if(viz.raf) cancelAnimationFrame(viz.raf);
-  // restore default bg
-  document.body.style.backgroundImage = "";
-}
       // ===== Variant switching + Mousey takeover =====
       function smoothVariantSwitch(apply){ document.documentElement.classList.add('anim-colors'); apply(); setTimeout(function(){ document.documentElement.classList.remove('anim-colors'); }, 800); }
       function tryPlayAudio(){
@@ -592,7 +546,6 @@ function stopViz(){
         a.play().catch(function(){ /* blocked? user needs a gesture */ });
       }
       function mouseTakeover(){
-        startViz();
         if(document.documentElement.getAttribute('data-variant')==='mouse') return;
         smoothVariantSwitch(function(){ document.documentElement.setAttribute('data-variant','mouse'); setLabelFromState(); });
         setNowPlaying(true);
@@ -617,7 +570,6 @@ function stopViz(){
         }
       }
       function mouseRelease(){
-stopViz();
         if(document.documentElement.getAttribute('data-variant')!=='mouse') return;
         smoothVariantSwitch(function(){ document.documentElement.removeAttribute('data-variant'); setLabelFromState(); });
         setNowPlaying(false);
