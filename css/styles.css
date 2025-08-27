@@ -14,6 +14,22 @@
   --elev:rgba(22,22,24,.7); --card:#111114; --link:#66b3ff; --accent:#0a84ff;
   --shadow:0 14px 32px rgba(0,0,0,.55); --focus:0 0 0 3px rgba(102,179,255,.35);
 }
+
+/* Witching Hour — blood red + black */
+[data-variant="witch"]{
+  --bg:#000000;
+  --text:#f4f2f3;
+  --muted:#b9b6b7;
+  --border:rgba(255,255,255,.12);
+  --elev:#190205;
+  --card:#250307;        /* deep, dried-blood panel */
+  --link:#ff3b3b;        /* hot blood red for links */
+  --accent:#8b0000;      /* darkred for buttons */
+  --shadow:0 18px 46px rgba(139,0,0,.35);
+  --focus:0 0 0 3px rgba(255,59,59,.35);
+}
+
+
 /* Mousey palette */
 [data-variant="mouse"]{
   --bg:#D991D4; --text:#ffffff; --muted:#ffffff;
