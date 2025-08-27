@@ -415,7 +415,7 @@ async function init(){
     var HERO = document.getElementById('heroTitle');
     var TYPE = document.getElementById('typewriter');
     var EYEBROW = document.getElementById('eyebrow');
-    var ORIG_TITLE = HERO ? HERO.textContent : 'Ren\\'s Humble Abode';
+    var ORIG_TITLE = HERO ? HERO.textContent : 'Ren\'s Humble Abode';
     var defaultTitle = document.title || 'lmao you actually came';
     var witchTitleTimer;
 
