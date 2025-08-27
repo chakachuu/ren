@@ -141,7 +141,8 @@ async function init(){
       lyricCtx.update=function(){
         var t=lyricCtx.audio.currentTime*1000;
         var idx=-1;
-        for(var i=0;i<lyricCtx.lines.length;i++){ if(lyricCtx.lines[i].t<=t) idx=i; else break; }
+        for(var i=0;i<li
+nes.length;i++){ if(lyricCtx.lines[i].t<=t) idx=i; else break; }
         if(idx!==lyricCtx.lastIndex){
           lyricCtx.lastIndex=idx;
           var newText = idx>=0 ? lyricCtx.lines[idx].text : lyricCtx.orig;
@@ -286,6 +287,7 @@ async function init(){
       var el=document.getElementById('typewriter');
       if(el){ el.textContent=''; el.classList.remove('no-caret'); }
       startTypewriter();
+      document.body.classList.remove('crt-on'); // ensure CRT off if any
     }
 
     // ===== prime audio on first gesture =====
@@ -322,6 +324,12 @@ async function init(){
         if(buffer.endsWith('1800')){ mouseTakeover(); buffer=''; return; }  // enter
         if(buffer.endsWith('nyan')){ mouseRelease(); buffer=''; return; }   // exit
         if(buffer.endsWith('meow')){ buffer=''; confetti(); return; }
+        // secret CRT trigger: "glitch"
+        if(buffer.endsWith('glitch')){
+          document.body.classList.add('crt-on');
+          setTimeout(()=> document.body.classList.remove('crt-on'), 8000);
+          buffer=''; return;
+        }
       }
       if(k==='g' || k==='G'){ document.body.classList.toggle('gremlin'); }
     });
@@ -420,14 +428,17 @@ async function init(){
       document.documentElement.setAttribute('data-variant','witch');
       setLabelFromState();
 
-      if (EYEBROW) EYEBROW.textContent = `it's currently ${fmtTime(new Date())}`;
-      if (HERO)    HERO.textContent = 'THE WITCHING HOUR';
+      if (EYEBROW) EYEBROW.textContent = `Introducing : it's currently ${fmtTime(new Date())}`;
+      if (HERO)    HERO.textContent = 'WITCHING HOUR';
 
       if (typeof stopTypewriter === 'function') stopTypewriter();
       if (TYPE){
         TYPE.classList.add('no-caret');
-        TYPE.textContent = `no, but seriously why would u open this site at ${fmtTime(new Date())}? go to sleep! maybe drink some water too.`;
+        TYPE.textContent = `no, but seriously why would u open this site at ${fmtTime(new Date())}? go to sleep! maybe drink some water too, can't sleep? ok`;
       }
+
+      // 🔴 enable CRT glitch during witching hour
+      document.body.classList.add('crt-on');
     }
     function exitWitch(){
       if(document.documentElement.getAttribute('data-variant')!=='witch') return;
@@ -442,6 +453,9 @@ async function init(){
         TYPE.classList.remove('no-caret');
       }
       if (typeof startTypewriter === 'function') startTypewriter();
+
+      // 🟢 disable CRT when leaving witch mode
+      document.body.classList.remove('crt-on');
     }
     function checkWitchingHour(){
       const now = new Date();
