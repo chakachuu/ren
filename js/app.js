@@ -426,7 +426,7 @@ async function init(){
       if (typeof stopTypewriter === 'function') stopTypewriter();
       if (TYPE){
         TYPE.classList.add('no-caret');
-        TYPE.textContent = "no, but seriously why would u open this site at ${fmtTime(new Date())}? go to sleep! maybe drink some water too.";
+        TYPE.textContent = `no, but seriously why would u open this site at ${fmtTime(new Date())}? go to sleep! maybe drink some water too, can't sleep? ok`;
       }
     }
     function exitWitch(){
