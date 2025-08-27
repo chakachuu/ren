@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="icon" href="https://cdn.jsdelivr.net/gh/chakachuu/ren@c8aa79aa4c7ba9ec4146c1497daf536f7be0bfac/https://cdn.jsdelivr.net/gh/chakachuu/ren@c8aa79aa4c7ba9ec4146c1497daf536f7be0bfac/logo.svg" type="image/svg+xml">
-<title>Ren - Cupertino Style</title>
+<link rel="icon" href="https://cdn.jsdelivr.net/gh/chakachuu/ren@c8aa79aa4c7ba9ec4146c1497daf536f7be0bfac/logo.svg" type="image/svg+xml">
+<title>lmao you actually came</title>
 <meta name="description" content="just go visit the site bro"/>
 <style>
 /* ================================================================
@@ -269,6 +269,46 @@ footer{padding:36px 0 80px; color:var(--muted); border-top:1px solid var(--borde
 <script>
 (function(){
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
+   
+// --- Right-click & snooping deterrents (speed bumps, not force fields) ---
+function isEditable(target){
+  return !!(target && target.closest('input, textarea, [contenteditable=""], [contenteditable="true"]'));
+}
+
+// 1) Block context menu & drag (except in editable fields)
+['contextmenu','dragstart'].forEach(function(type){
+  document.addEventListener(type, function(e){
+    if (isEditable(e.target)) return;
+    e.preventDefault();
+  }, {capture:true});
+});
+
+// 2) Block right/middle mouse actions (context menu often sneaks via auxclick)
+['mousedown','auxclick'].forEach(function(type){
+  document.addEventListener(type, function(e){
+    if (isEditable(e.target)) return;
+    if (e.button === 2 || e.button === 1) { // 2=right, 1=middle
+      e.preventDefault();
+    }
+  }, {capture:true});
+});
+
+// 3) Block common “peek at code” shortcuts (still bypassable, but annoying)
+document.addEventListener('keydown', function(e){
+  if (isEditable(e.target)) return;
+  var k = (e.key || '').toLowerCase();
+
+  var blocked =
+    k === 'f12' ||                               // DevTools
+    ((e.ctrlKey || e.metaKey) && k === 'u') ||   // View Source
+    ((e.ctrlKey || e.metaKey) && k === 's') ||   // Save page
+    ((e.ctrlKey || e.metaKey) && e.shiftKey && (k === 'i' || k === 'j' || k === 'c')); // DevTools panes
+
+  if (blocked){
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  }
+}, {capture:true});
 
   function init(){
     try{
