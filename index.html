@@ -320,7 +320,7 @@ document.addEventListener('keydown', function(e){
       function setNowPlaying(on){
         if(!eyebrow) return;
         if(on){
-          eyebrow.innerHTML = '<strong id="npNow" class="flicker">Now Playing</strong> 1-800  - bbno$, Ironmouse';
+          eyebrow.innerHTML = '<strong id="npNow" class="flicker">Now Playing</strong> | 1-800  - bbno$, Ironmouse';
         }else{
           eyebrow.textContent = 'Introducing';
         }
@@ -371,7 +371,7 @@ document.addEventListener('keydown', function(e){
           {op:'type', text:'Polished, '},
           {op:'type', text:'zero pop-ups & maximum '},
           ...typo('brainasudhauihduhasjdalkjLJLKASD', 'braincells. '),
-          {op:'type', text:'<b>Crafted with too much caffeine and a healthy amount of cigs</b>.'}
+          {op:'type', text:'Crafted with too much caffeine and a healthy amount of cigs.'}
         ];
 
         function next(){ if(TW.kill) return; i++; if(i>=steps.length){ TW.running=false; return; } step(steps[i]); }
