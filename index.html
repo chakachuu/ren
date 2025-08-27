@@ -351,7 +351,7 @@ document.addEventListener('keydown', function(e){
       function startTypewriter(){
         var el=document.getElementById('typewriter'); if(!el) return;
         TW.kill=false; TW.running=true; el.classList.remove('no-caret');
-        var out=''; var speed=50; var back=15; var i=0;
+        var out=''; var speed=40; var back=15; var i=0;
 
         function typo(mistake, fix, pause, erase){
           return [
@@ -366,12 +366,12 @@ document.addEventListener('keydown', function(e){
           {op:'type', text:'Cupertino-clean, dumb-approved. '},
           ...typo('Starlgiht ', 'Starlight '),
           {op:'type', text:'by day, '},
-          ...typo('Space Grray ', 'Space Gray '),
+          {op:'type', text:'Space Gray '},
           ...typo('by nigg ', 'by night, '),
-          ...typo('polsihed', 'polished, '),
-          {op:'type', text:'zero pop-ups, maximum '},
+          {op:'type', text:'Polished, '},
+          {op:'type', text:'zero pop-ups & maximum '},
           ...typo('brainasudhauihduhasjdalkjLJLKASD', 'braincells. '),
-          {op:'type', text:'Crafted with too much caffeine and a healthy amount of chapman (the cherry one).'}
+          {op:'type', text:'<b>Crafted with too much caffeine and a healthy amount of cigs</b>.'}
         ];
 
         function next(){ if(TW.kill) return; i++; if(i>=steps.length){ TW.running=false; return; } step(steps[i]); }
