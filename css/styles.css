@@ -137,3 +137,75 @@ footer{padding:36px 0 80px; color:var(--muted); border-top:1px solid var(--borde
 /* Gremlin wobble (secret) */
 .gremlin .panel{ animation:wob 3.2s ease-in-out infinite }
 @keyframes wob{0%{transform:rotate(0)}50%{transform:rotate(.35deg)}100%{transform:rotate(0)}}
+
+/* ==== CRT effect ==== */
+body.crt-on {
+  filter: contrast(1.05) saturate(1.08);
+  transform: translateZ(0); /* force GPU compositing */
+}
+
+/* scanlines overlay */
+body.crt-on::before {
+  content: "";
+  position: fixed; inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.04) 0 2px,
+      rgba(0,0,0,0) 2px 4px
+    );
+  mix-blend-mode: overlay;
+  animation: crt-scan 8s linear infinite;
+}
+
+/* vignette + subtle flicker */
+body.crt-on::after {
+  content: "";
+  position: fixed; inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at center,
+      rgba(0,0,0,0) 0%,
+      rgba(0,0,0,0) 60%,
+      rgba(0,0,0,0.25) 100%);
+  animation: crt-flicker 1.8s steps(2,end) infinite;
+}
+
+/* RGB chromatic aberration + jitter on hero title */
+body.crt-on #heroTitle {
+  position: relative;
+  text-shadow:
+    1px 0 rgba(255,0,0,0.6),
+   -1px 0 rgba(0,255,255,0.6);
+  animation: crt-rgb 120ms steps(2,end) infinite,
+             crt-jitter 80ms steps(1,end) infinite;
+}
+
+/* keyframes */
+@keyframes crt-scan {
+  0%   { background-position: 0 -100vh; }
+  100% { background-position: 0 100vh; }
+}
+@keyframes crt-flicker {
+  0%,100% { opacity:.95; }
+  50%     { opacity:.85; }
+}
+@keyframes crt-rgb {
+  0% {
+    text-shadow: 1px 0 rgba(255,0,0,.65),
+                -1px 0 rgba(0,255,255,.65);
+  }
+  100% {
+    text-shadow: -1px 0 rgba(255,0,0,.65),
+                 1px 0 rgba(0,255,255,.65);
+  }
+}
+@keyframes crt-jitter {
+  0%   { transform: translate(0,0); }
+  25%  { transform: translate(0.4px,0.2px); }
+  50%  { transform: translate(-0.4px,-0.2px); }
+  75%  { transform: translate(0.2px,-0.3px); }
+  100% { transform: translate(0,0); }
+}
+
