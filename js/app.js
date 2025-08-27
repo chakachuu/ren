@@ -33,7 +33,8 @@ async function init(){
     function setLabelFromState(){
       var v=document.documentElement.getAttribute('data-variant');
       if(v==='mouse'){ if(label) label.textContent='Mousey'; return; }
-      if(v==='emo'){ if(label) label.textContent='Emo'; return; }
+      if(v==='emo'){  if(label) label.textContent='Emo';   return; }
+      if(v==='witch'){if(label) label.textContent='Witch'; return; }
       if(label) label.textContent=(mode==='spacegray'?'Space Gray': mode.charAt(0).toUpperCase()+mode.slice(1));
     }
     applyTheme(); setLabelFromState();
@@ -213,13 +214,10 @@ async function init(){
     }
     function stopBeat(){ beat.active=false; if(beat.raf) cancelAnimationFrame(beat.raf); }
 
-    // ===== Variant switching helpers =====
-    function smoothVariantSwitch(apply){ document.documentElement.classList.add('anim-colors'); apply(); setTimeout(function(){ document.documentElement.classList.remove('anim-colors'); }, 800); }
-
     // ===== Load LRC files upfront =====
     const [mouseyLrc, emoLrc] = await Promise.all([
-      fetch('assets/lrc/1800.lrc').then(r=>r.text()).catch(()=>''),
-      fetch('assets/lrc/emo.lrc').then(r=>r.text()).catch(()=>''),
+      fetch('assets/lrc/1800.lrc').then(r=>r.text()).catch(()=>''),  // keep your 1800 lyrics here
+      fetch('assets/lrc/emo.lrc').then(r=>r.text()).catch(()=>''),   // and your emo track lyrics here
     ]);
 
     // ===== Mousey takeover =====
@@ -257,7 +255,7 @@ async function init(){
     function emoTakeover(){
       if(document.documentElement.getAttribute('data-variant')==='emo') return;
       smoothVariantSwitch(function(){ document.documentElement.setAttribute('data-variant','emo'); setLabelFromState(); });
-      setNowPlaying(true, 'Dear Maria Count Me In - All Time Low');
+      setNowPlaying(true, 'Dear Maria Count Me In - All Time Low'); // change label if your track differs
       stopTypewriter();
       stopLyric(); stopBeat();
       var a=document.getElementById('emoAudio');
@@ -398,5 +396,62 @@ async function init(){
         ((e.ctrlKey || e.metaKey) && e.shiftKey && (k === 'i' || k === 'j' || k === 'c'));
       if (blocked){ e.preventDefault(); e.stopImmediatePropagation(); }
     }, {capture:true});
+
+    // ===== WITCHING HOUR (visitor-local 3:00–3:30 AM) =====
+    var HERO = document.getElementById('heroTitle');
+    var TYPE = document.getElementById('typewriter');
+    var EYEBROW = document.getElementById('eyebrow');
+    var ORIG_TITLE = HERO ? HERO.textContent : 'Ren\'s Humble Abode';
+
+    function fmtTime(d){
+      let h = d.getHours(), m = d.getMinutes();
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      h = h % 12; if (h === 0) h = 12;
+      const mm = (m<10 ? '0' : '') + m;
+      return `${h}:${mm} ${ampm}`;
+    }
+    function inWitchWindow(d){ return d.getHours() === 3 && d.getMinutes() < 30; }
+
+    function enterWitch(){
+      // don't override if user purposely switched to another fun mode
+      const current = document.documentElement.getAttribute('data-variant');
+      if(current && current !== 'witch') return;
+
+      document.documentElement.setAttribute('data-variant','witch');
+      setLabelFromState();
+
+      if (EYEBROW) EYEBROW.textContent = `Introducing : it's currently ${fmtTime(new Date())}`;
+      if (HERO)    HERO.textContent = 'WITCHING HOUR';
+
+      if (typeof stopTypewriter === 'function') stopTypewriter();
+      if (TYPE){
+        TYPE.classList.add('no-caret');
+        TYPE.textContent = "no, but seriously why would u open this site around these time? go to sleep! maybe drink some water too, can't sleep? ok";
+      }
+    }
+    function exitWitch(){
+      if(document.documentElement.getAttribute('data-variant')!=='witch') return;
+      document.documentElement.removeAttribute('data-variant');
+      setLabelFromState();
+
+      if (EYEBROW) EYEBROW.textContent = 'Introducing';
+      if (HERO)    HERO.textContent = ORIG_TITLE;
+
+      if (TYPE){
+        TYPE.textContent = '';
+        TYPE.classList.remove('no-caret');
+      }
+      if (typeof startTypewriter === 'function') startTypewriter();
+    }
+    function checkWitchingHour(){
+      const now = new Date();
+      if (inWitchWindow(now)) enterWitch(); else exitWitch();
+    }
+    checkWitchingHour();
+    setInterval(checkWitchingHour, 60_000);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) checkWitchingHour(); });
+
+    // ===== helpers =====
+    function smoothVariantSwitch(apply){ document.documentElement.classList.add('anim-colors'); apply(); setTimeout(function(){ document.documentElement.classList.remove('anim-colors'); }, 800); }
   } catch(err){ console.error('init error', err); }
 }
