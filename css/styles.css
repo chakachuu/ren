@@ -1,0 +1,123 @@
+/* ================================================================
+   Tokens & Themes
+   data-theme: starlight (light), spacegray (dark)
+   data-variant: mouse (Ironmouse), emo (Ren-specified palette)
+================================================================= */
+:root{
+  --bg:#f5f3ef; --text:#1d1d1f; --muted:#6e6e73; --border:rgba(0,0,0,.12);
+  --elev:rgba(255,255,255,.78); --card:#f5f5f7; --link:#0a84ff; --accent:#0071e3;
+  --radius:22px; --shadow:0 10px 28px rgba(0,0,0,.08);
+  --focus:0 0 0 3px rgba(10,132,255,.35);
+}
+[data-theme="spacegray"]{
+  --bg:#0b0b0d; --text:#f5f5f7; --muted:#a1a1a6; --border:rgba(255,255,255,.12);
+  --elev:rgba(22,22,24,.7); --card:#111114; --link:#66b3ff; --accent:#0a84ff;
+  --shadow:0 14px 32px rgba(0,0,0,.55); --focus:0 0 0 3px rgba(102,179,255,.35);
+}
+/* Mousey palette */
+[data-variant="mouse"]{
+  --bg:#D991D4; --text:#ffffff; --muted:#ffffff;
+  --border:rgba(242,92,217,.28);
+  --elev:#A6035D ; --card:#A6035D;
+  --link:#F2059F; --accent:#F2059F;
+  --shadow:0 14px 36px rgba(166,3,93,.35);
+  --focus:0 0 0 3px rgba(242,5,159,.45);
+}
+/* Emo — exact palette: #472e62, #000000, #413b47, #00375b, #565656 */
+[data-variant="emo"]{
+  --bg:#000000;           /* black */
+  --text:#eaeaec;
+  --muted:#565656;        /* muted text */
+  --border:rgba(255,255,255,.12);
+  --elev:#1a181d;         /* subtle lift */
+  --card:#413b47;         /* charcoal-plum */
+  --link:#00375b;         /* deep blue */
+  --accent:#472e62;       /* deep purple */
+  --shadow:0 16px 42px rgba(0,0,0,.7);
+  --focus:0 0 0 3px rgba(71,46,98,.45);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display",Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg); color:var(--text);
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+a{color:var(--link); text-decoration:none}
+a:focus-visible,button:focus-visible{outline:var(--focus)}
+img{max-width:100%; display:block}
+
+/* Header */
+header{position:sticky; top:0; z-index:50; backdrop-filter:saturate(160%) blur(18px); background:var(--elev); border-bottom:1px solid var(--border)}
+.nav{max-width:980px; margin:0 auto; padding:10px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px}
+.brand{display:flex; align-items:center; gap:10px; color:inherit}
+.logo{width:24px; height:24px; display:inline-block; color:var(--text); background:currentColor; -webkit-mask:url('https://cdn.jsdelivr.net/gh/chakachuu/ren@c8aa79aa4c7ba9ec4146c1497daf536f7be0bfac/logo.svg') center/contain no-repeat; mask:url('https://cdn.jsdelivr.net/gh/chakachuu/ren@c8aa79aa4c7ba9ec4146c1497daf536f7be0bfac/logo.svg') center/contain no-repeat;}
+/* In Mousey, use the webp logo */
+[data-variant="mouse"] .logo{
+  -webkit-mask:none; mask:none;
+  background:url('https://mouseyy.pages.dev/favicon.webp') center/contain no-repeat;
+  width:24px; height:24px;
+}
+.links{display:flex; align-items:center; gap:8px}
+.link{color:var(--muted); padding:6px 10px; border-radius:10px}
+.link:hover{background:rgba(0,0,0,.06)}
+[data-theme="spacegray"] .link:hover{background:rgba(255,255,255,.08)}
+[data-variant="mouse"] .link:hover{background:rgba(242,5,159,.12)}
+[data-variant="emo"] .link:hover{background:rgba(255,255,255,.08)}
+.toggle{display:inline-flex; align-items:center; gap:8px; padding:6px 12px; border-radius:999px; border:1px solid var(--border); background:transparent; color:var(--muted); cursor:pointer}
+.toggle .dot{width:14px; height:14px; border-radius:50%; background:var(--accent)}
+
+/* Layout */
+.wrap{max-width:1012px; margin:0 auto; padding:0 16px}
+.hero{padding:54px 0 24px; text-align:center}
+.eyebrow{font-weight:600; letter-spacing:.02em; color:var(--muted); font-size:14px}
+h1{font-size:clamp(36px,6vw,64px); line-height:1.06; margin:6px 0 10px; font-weight:700; transition:opacity .25s ease;}
+.lead{font-size:clamp(16px,2.4vw,20px); color:var(--muted); margin:0 auto 22px; max-width:720px}
+.cta{display:inline-flex; align-items:center; gap:10px}
+.btn{display:inline-flex; align-items:center; gap:8px; padding:10px 16px; border-radius:999px; border:1px solid var(--border); background:var(--accent); color:#fff; font-weight:600}
+.btn.ghost{background:transparent; color:var(--text)}
+
+.grid{display:grid; grid-template-columns:repeat(12,1fr); gap:16px}
+.panel{grid-column:span 12; border-radius:28px; overflow:hidden; background:var(--card); border:1px solid var(--border); box-shadow:var(--shadow)}
+.panel .inner{display:grid; grid-template-columns:1fr; gap:8px}
+.panel .text{padding:22px}
+.panel h2{font-size:26px; margin:0 0 6px}
+.panel p{margin:0; color:var(--muted); font-size:15px}
+
+/* Social icons row */
+.socials{display:flex; gap:12px; justify-content:center; margin:28px 0 6px}
+.socials a{
+  width:42px; height:42px; border-radius:14px;
+  display:inline-flex; align-items:center; justify-content:center;
+  border:1px solid var(--border); background:var(--card); color:var(--text);
+  box-shadow:var(--shadow); transition:transform .2s ease, background-color .2s ease, border-color .2s ease, color .2s ease;
+}
+.socials a:hover{ transform:translateY(-1px); background:var(--elev); }
+.socials a svg{ width:20px; height:20px; fill:currentColor; display:block; }
+
+/* Footer */
+footer{padding:36px 0 80px; color:var(--muted); border-top:1px solid var(--border)}
+#foot-rot{opacity:1; transition:opacity .45s ease}
+
+/* Typewriter caret */
+#typewriter::after{content:'|'; display:inline-block; margin-left:2px; animation:blink 1s steps(2,end) infinite}
+#typewriter.no-caret::after{content:''; animation:none}
+@keyframes blink{50%{opacity:0}}
+
+/* Now Playing beat pulse (JS toggles .beat class per onset) */
+.flicker{font-weight:700}
+.flicker.beat{ animation:beat .16s ease }
+@keyframes beat{
+  0%{ opacity:1; text-shadow:0 0 0 rgba(242,5,159,0)}
+  40%{ opacity:.25; text-shadow:0 0 0 rgba(242,5,159,0)}
+  60%{ opacity:1; text-shadow:0 0 .55em rgba(242,5,159,.85)}
+  100%{ opacity:1; text-shadow:0 0 0 rgba(242,5,159,0)}
+}
+
+/* Smooth theme/variant transitions */
+.anim-colors, .anim-colors *{ transition: color .6s ease, background-color .6s ease, border-color .6s ease, box-shadow .6s ease, outline-color .6s ease; }
+
+/* Gremlin wobble (secret) */
+.gremlin .panel{ animation:wob 3.2s ease-in-out infinite }
+@keyframes wob{0%{transform:rotate(0)}50%{transform:rotate(.35deg)}100%{transform:rotate(0)}}
