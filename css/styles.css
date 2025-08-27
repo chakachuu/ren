@@ -43,7 +43,7 @@
 [data-variant="emo"]{
   --bg:#000000;           /* black */
   --text:#eaeaec;
-  --muted:#565656;        /* muted text */
+  --muted:#eaeaec;        /* muted text */
   --border:rgba(255,255,255,.12);
   --elev:#1a181d;         /* subtle lift */
   --card:#413b47;         /* charcoal-plum */
