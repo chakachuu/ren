@@ -557,25 +557,31 @@ document.addEventListener('keydown', function(e){
       }
 
       // ===== Beat-synced "Now Playing" flicker (generic) =====
-      var beat={ ctx:null, src:null, analyser:null, data:null, ema:0, last:0, raf:0, active:false };
-      function ensureAudioGraph(audioEl){
-        if(!audioEl) return;
-        var AC = window.AudioContext || window.webkitAudioContext;
-        if(!AC) return;
-        if(!beat.ctx) beat.ctx = new AC();
-        if(beat.ctx.state === 'suspended'){ beat.ctx.resume().catch(()=>{}); }
+      // cache which element is wired
+var beat = { ctx:null, src:null, elem:null, analyser:null, data:null, ema:0, last:0, raf:0, active:false };
 
-        try{
-          if(beat.src){ try{beat.src.disconnect();}catch(_e){} }
-          beat.src = beat.ctx.createMediaElementSource(audioEl);
-          beat.analyser = beat.ctx.createAnalyser();
-          beat.analyser.fftSize = 1024;
-          beat.analyser.smoothingTimeConstant = 0.85;
-          beat.data = new Uint8Array(beat.analyser.fftSize);
-          beat.src.connect(beat.analyser);
-          beat.src.connect(beat.ctx.destination);
-        }catch(e){ /* ignore duplicate source creation errors */ }
-      }
+function ensureAudioGraph(audioEl){
+  if(!audioEl) return;
+  var AC = window.AudioContext || window.webkitAudioContext;
+  if(!AC) return;
+  if(!beat.ctx) beat.ctx = new AC();
+  if(beat.ctx.state === 'suspended'){ beat.ctx.resume().catch(()=>{}); }
+
+  // if this exact element is already wired, reuse it
+  if(beat.elem === audioEl && beat.src && beat.analyser) return;
+
+  // switching to a different element → disconnect old graph
+  try{ if(beat.src) beat.src.disconnect(); }catch(_){}
+
+  beat.elem = audioEl;
+  beat.src = beat.ctx.createMediaElementSource(audioEl);
+  beat.analyser = beat.ctx.createAnalyser();
+  beat.analyser.fftSize = 1024;
+  beat.analyser.smoothingTimeConstant = 0.85;
+  beat.data = new Uint8Array(beat.analyser.fftSize);
+  beat.src.connect(beat.analyser);
+  beat.src.connect(beat.ctx.destination);
+}
       function pulseNowPlaying(){
         var np=document.getElementById('npNow');
         if(!np) return;
@@ -614,7 +620,10 @@ document.addEventListener('keydown', function(e){
         setNowPlaying(true, '1-800  - bbno$, Ironmouse');
         stopLyric(); stopBeat();
         startLyric('mouseyAudio','mouseyLRC');
-        var a=document.getElementById('mouseyAudio'); startBeat(a); tryPlayAudio(a);
+       var a = document.getElementById('mouseyAudio');
+a.currentTime = 0;                // start from the top
+startBeat(a);
+a.play().catch(()=>{});           // call play directly tryPlayAudio(a);
         stopTypewriter();
         var el=document.getElementById('typewriter'); if(!el) return;
         el.classList.remove('no-caret');
