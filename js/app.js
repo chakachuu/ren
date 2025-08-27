@@ -216,8 +216,8 @@ async function init(){
 
     // ===== Load LRC files upfront =====
     const [mouseyLrc, emoLrc] = await Promise.all([
-      fetch('assets/lrc/1800.lrc').then(r=>r.text()).catch(()=>''),  // 1800 lyrics
-      fetch('assets/lrc/emo.lrc').then(r=>r.text()).catch(()=>''),   // emo lyrics
+      fetch('assets/lrc/1800.lrc').then(r=>r.text()).catch(()=>''),  
+      fetch('assets/lrc/emo.lrc').then(r=>r.text()).catch(()=>''),   
     ]);
 
     // ===== Mousey takeover =====
@@ -286,8 +286,9 @@ async function init(){
       var el=document.getElementById('typewriter');
       if(el){ el.textContent=''; el.classList.remove('no-caret'); }
       startTypewriter();
-      document.body.classList.remove('crt-on'); // ensure CRT off if any
-      clearInterval(witchTitleTimer);           // stop title flicker if active
+      document.body.classList.remove('crt-on');
+      document.body.classList.remove('glitch-on');
+      clearInterval(witchTitleTimer);
       document.title = defaultTitle;
     }
 
@@ -322,20 +323,24 @@ async function init(){
       // rolling alphanumeric buffer
       if(/^[a-z0-9]$/.test(k)){
         buffer=(buffer+k).slice(-12);
-        if(buffer.endsWith('1800')){ mouseTakeover(); buffer=''; return; }  // enter
-        if(buffer.endsWith('nyan')){ mouseRelease(); buffer=''; return; }   // exit
+        if(buffer.endsWith('1800')){ mouseTakeover(); buffer=''; return; }  
+        if(buffer.endsWith('nyan')){ mouseRelease(); buffer=''; return; }   
         if(buffer.endsWith('meow')){ buffer=''; confetti(); return; }
-        // secret CRT trigger: "glitch" (8s)
         if(buffer.endsWith('glitch')){
           document.body.classList.add('crt-on');
           setTimeout(()=> document.body.classList.remove('crt-on'), 8000);
+          buffer=''; return;
+        }
+        if(buffer.endsWith('glitchall')){
+          document.body.classList.add('glitch-on');
+          setTimeout(()=> document.body.classList.remove('glitch-on'), 8000);
           buffer=''; return;
         }
       }
       if(k==='g' || k==='G'){ document.body.classList.toggle('gremlin'); }
     });
 
-    // Logo triple-tap → Mousey; 7 taps → wobble
+    // Logo taps
     var taps=0, timer=null, logo=document.getElementById('logo');
     if(logo){
       function reset(){ taps=0; }
@@ -410,7 +415,7 @@ async function init(){
     var HERO = document.getElementById('heroTitle');
     var TYPE = document.getElementById('typewriter');
     var EYEBROW = document.getElementById('eyebrow');
-    var ORIG_TITLE = HERO ? HERO.textContent : 'Ren\'s Humble Abode';
+    var ORIG_TITLE = HERO ? HERO.textContent : 'Ren\\'s Humble Abode';
     var defaultTitle = document.title || 'lmao you actually came';
     var witchTitleTimer;
 
@@ -421,10 +426,15 @@ async function init(){
       const mm = (m<10 ? '0' : '') + m;
       return `${h}:${mm} ${ampm}`;
     }
-    function inWitchWindow(d){ return d.getHours() === 3 && d.getMinutes() < 30; }
+    function inWitchWindow(d){
+  const h = d.getHours();
+  const m = d.getMinutes();
+
+  // true if between 3:00 and 4:30
+  return (h === 3) || (h === 4 && m < 30);
+}
 
     function enterWitch(){
-      // don't override if user purposely switched to another fun mode
       const current = document.documentElement.getAttribute('data-variant');
       if(current && current !== 'witch') return;
 
@@ -440,8 +450,9 @@ async function init(){
         TYPE.textContent = `no, but seriously why would u open this site at ${fmtTime(new Date())}? go to sleep! maybe drink some water too.`;
       }
 
-      // CRT glitch during witching hour
+      // Enable CRT + global text glitch
       document.body.classList.add('crt-on');
+      document.body.classList.add('glitch-on');
 
       // Creepy tab title flicker
       clearInterval(witchTitleTimer);
@@ -468,6 +479,7 @@ async function init(){
       if (typeof startTypewriter === 'function') startTypewriter();
 
       document.body.classList.remove('crt-on');
+      document.body.classList.remove('glitch-on');
       clearInterval(witchTitleTimer);
       document.title = defaultTitle;
     }
