@@ -426,12 +426,7 @@ async function init(){
       const mm = (m<10 ? '0' : '') + m;
       return `${h}:${mm} ${ampm}`;
     }
-    function inWitchWindow(d){
-  const h = d.getHours();
-  const m = d.getMinutes();
-
-  // true if between 3:00 and 4:30
-  return (h === 3) || (h === 3 && m < 30);
+    function inWitchWindow(d){ return d.getHours() === 3 && d.getMinutes() < 30; } right?
 }
 
     function enterWitch(){
