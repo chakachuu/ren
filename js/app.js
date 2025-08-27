@@ -431,7 +431,7 @@ async function init(){
   const m = d.getMinutes();
 
   // true if between 3:00 and 4:30
-  return (h === 3) || (h === 4 && m < 30);
+  return (h === 3) || (h === 3 && m < 30);
 }
 
     function enterWitch(){
