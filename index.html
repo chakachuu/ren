@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<title>Ren - Cupertino Style</title>
+<meta name="description" content="just go visit the site bro"/>
+<style>
+/* ================================================================
+   Tokens & Themes
+   data-theme: starlight (light), spacegray (dark)
+   data-variant: mouse (Ironmouse palette)
+================================================================= */
+:root{
+  --bg:#f5f3ef; --text:#1d1d1f; --muted:#6e6e73; --border:rgba(0,0,0,.12);
+  --elev:rgba(255,255,255,.78); --card:#f5f5f7; --link:#0a84ff; --accent:#0071e3;
+  --radius:22px; --shadow:0 10px 28px rgba(0,0,0,.08);
+  --focus:0 0 0 3px rgba(10,132,255,.35);
+}
+[data-theme="spacegray"]{
+  --bg:#0b0b0d; --text:#f5f5f7; --muted:#a1a1a6; --border:rgba(255,255,255,.12);
+  --elev:rgba(22,22,24,.7); --card:#111114; --link:#66b3ff; --accent:#0a84ff;
+  --shadow:0 14px 32px rgba(0,0,0,.55); --focus:0 0 0 3px rgba(102,179,255,.35);
+}
+/* Mousey — your palette (#A6035D, #F2059F, #F25CD9, #D9BAD4, #D991D4) */
+[data-variant="mouse"]{
+  --bg:#D991D4; --text:#ffffff; --muted:#ffffff;
+  --border:rgba(242,92,217,.28);
+  --elev:#A6035D ; --card:#A6035D;
+  --link:#F2059F; --accent:#F2059F;
+  --shadow:0 14px 36px rgba(166,3,93,.35);
+  --focus:0 0 0 3px rgba(242,5,159,.45);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display",Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg); color:var(--text);
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+a{color:var(--link); text-decoration:none}
+a:focus-visible,button:focus-visible{outline:var(--focus)}
+img{max-width:100%; display:block}
+
+/* Header */
+header{position:sticky; top:0; z-index:50; backdrop-filter:saturate(160%) blur(18px); background:var(--elev); border-bottom:1px solid var(--border)}
+.nav{max-width:980px; margin:0 auto; padding:10px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px}
+.brand{display:flex; align-items:center; gap:10px; color:inherit}
+.logo{width:24px; height:24px; display:inline-block; color:var(--text); background:currentColor; -webkit-mask:url('logo.svg') center/contain no-repeat; mask:url('logo.svg') center/contain no-repeat;}
+/* In Mousey, use the webp logo */
+[data-variant="mouse"] .logo{
+  -webkit-mask:none; mask:none;
+  background:url('https://mouseyy.pages.dev/favicon.webp') center/contain no-repeat;
+  width:24px; height:24px;
+}
+.links{display:flex; align-items:center; gap:8px}
+.link{color:var(--muted); padding:6px 10px; border-radius:10px}
+.link:hover{background:rgba(0,0,0,.06)}
+[data-theme="spacegray"] .link:hover{background:rgba(255,255,255,.08)}
+[data-variant="mouse"] .link:hover{background:rgba(242,5,159,.12)}
+.toggle{display:inline-flex; align-items:center; gap:8px; padding:6px 12px; border-radius:999px; border:1px solid var(--border); background:transparent; color:var(--muted); cursor:pointer}
+.toggle .dot{width:14px; height:14px; border-radius:50%; background:var(--accent)}
+
+/* Layout */
+.wrap{max-width:1012px; margin:0 auto; padding:0 16px}
+.hero{padding:54px 0 24px; text-align:center}
+.eyebrow{font-weight:600; letter-spacing:.02em; color:var(--muted); font-size:14px}
+h1{font-size:clamp(36px,6vw,64px); line-height:1.06; margin:6px 0 10px; font-weight:700; transition:opacity .25s ease;}
+.lead{font-size:clamp(16px,2.4vw,20px); color:var(--muted); margin:0 auto 22px; max-width:720px}
+.cta{display:inline-flex; align-items:center; gap:10px}
+.btn{display:inline-flex; align-items:center; gap:8px; padding:10px 16px; border-radius:999px; border:1px solid var(--border); background:var(--accent); color:#fff; font-weight:600}
+.btn.ghost{background:transparent; color:var(--text)}
+
+.grid{display:grid; grid-template-columns:repeat(12,1fr); gap:16px}
+.panel{grid-column:span 12; border-radius:28px; overflow:hidden; background:var(--card); border:1px solid var(--border); box-shadow:var(--shadow)}
+.panel .inner{display:grid; grid-template-columns:1fr; gap:8px}
+.panel .text{padding:22px}
+.panel h2{font-size:26px; margin:0 0 6px}
+.panel p{margin:0; color:var(--muted); font-size:15px}
+
+/* Social icons row */
+.socials{display:flex; gap:12px; justify-content:center; margin:28px 0 6px}
+.socials a{
+  width:42px; height:42px; border-radius:14px;
+  display:inline-flex; align-items:center; justify-content:center;
+  border:1px solid var(--border); background:var(--card); color:var(--text);
+  box-shadow:var(--shadow); transition:transform .2s ease, background-color .2s ease, border-color .2s ease, color .2s ease;
+}
+.socials a:hover{ transform:translateY(-1px); background:var(--elev); }
+.socials a svg{ width:20px; height:20px; fill:currentColor; display:block; }
+
+/* Footer */
+footer{padding:36px 0 80px; color:var(--muted); border-top:1px solid var(--border)}
+#foot-rot{opacity:1; transition:opacity .45s ease}
+
+/* Typewriter caret */
+#typewriter::after{content:'|'; display:inline-block; margin-left:2px; animation:blink 1s steps(2,end) infinite}
+#typewriter.no-caret::after{content:''; animation:none}
+@keyframes blink{50%{opacity:0}}
+
+/* Now Playing beat pulse (JS toggles .beat class per onset) */
+.flicker{font-weight:700}
+.flicker.beat{ animation:beat .16s ease }
+@keyframes beat{
+  0%{ opacity:1; text-shadow:0 0 0 rgba(242,5,159,0)}
+  40%{ opacity:.25; text-shadow:0 0 0 rgba(242,5,159,0)}
+  60%{ opacity:1; text-shadow:0 0 .55em rgba(242,5,159,.85)}
+  100%{ opacity:1; text-shadow:0 0 0 rgba(242,5,159,0)}
+}
+
+/* Smooth theme/variant transitions */
+.anim-colors, .anim-colors *{ transition: color .6s ease, background-color .6s ease, border-color .6s ease, box-shadow .6s ease, outline-color .6s ease; }
+
+/* Gremlin wobble (secret) */
+.gremlin .panel{ animation:wob 3.2s ease-in-out infinite }
+@keyframes wob{0%{transform:rotate(0)}50%{transform:rotate(.35deg)}100%{transform:rotate(0)}}
+</style>
+</head>
+<body>
+<header>
+  <div class="nav">
+    <a class="brand" href="#top" id="logo" aria-label="nyan home">
+      <span class="logo" aria-hidden="true"></span>
+      <strong>oh hi!</strong>
+    </a>
+    <!--<div class="links">
+      <a class="link" href="#about">About</a>
+      <!-- Contact link removed -->
+      <button id="themeToggle" class="toggle" type="button"><span class="dot"></span><span id="themeLabel">Auto</span></button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="top">
+  <section class="hero">
+    <div class="eyebrow" id="eyebrow">Introducing</div>
+    <h1 id="heroTitle">Ren’s personal site</h1>
+    <p class="lead"><span id="typewriter" aria-live="polite"></span></p>
+    <div class="cta">
+      <a class="btn" href="#about">About</a>
+      <a class="btn ghost" href="#socials">Socials</a>
+    </div>
+  </section>
+
+  <section id="about" class="grid" style="margin-top:8px">
+    <article class="panel">
+      <div class="inner">
+        <div class="text">
+          <h2>About</h2>
+          <p>Deadpan outside, soft inside. I build playful, performant interfaces that feel expensive without being heavy. I cut scope like a surgeon, ship fast (if i feel like it), and hide the chaos behind tidy commits.</p>
+          <p>Toolbelt: <b>TypeScript</b>, <b>React</b>, <b>Tailwind</b>, a dash of motion, and the occasional <b>WebGL</b>. I like crisp typography, tiny bundles, and <b>UX</b> that respects the user’s time. If it tickles my pickle and floats my boat , it stays. Everything else… got thrown away.</p>
+        </div>
+      </div>
+    </article>
+  </section>
+  
+  <section id="about" class="grid" style="margin-top:8px">
+    <article class="panel">
+      <div class="inner">
+        <div class="text">
+          <h2>maybe i'll add something later</h2>
+          <p>i kinda want to make this as my portfolio, but eh i got distracted and made all of these (if u know u know). </p>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- Social icons row (replaces Contact box) -->
+  <section id="socials" class="socials wrap" aria-label="Social links">
+    <!--<a class="social" href="mailto:you@example.com" aria-label="Email">
+      <!-- Gmail icon 
+      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Gmail</title><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>
+    </a>-->
+    <a class="social" href="https://instagram.com/chakachuu" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+      <!-- Instagram icon -->
+      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Instagram</title><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg>
+    </a>
+    <a class="social" href="https://github.com/chakachuu" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+      <!-- GitHub icon -->
+      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+    </a>
+  </section>
+ <br />
+  <footer class="wrap">
+    <p>© <span id="y"></span> <b>Made with 💖 by Ren.</b> <span id="foot-rot">Powered by caffeine and questionable life choices.</span></p>
+  </footer>
+  <br />
+</main>
+
+<!-- Audio + LRC for Mousey lyric sync -->
+<audio id="mouseyAudio" src="1800.mp3" preload="metadata" playsinline style="display:none"></audio>
+<script id="mouseyLRC" type="text/plain">
+[00:00.00] wait for it......
+[00:06.55]Still on that—
+[00:07.08]One, eight, zero, zero, he's so handsome, he's my hero
+[00:10.80]One, eight, zero, zero
+[00:13.73]Still on that 1-800, hit me up for a good time
+[00:17.99]My shit bumps 'til it push me outta line
+[00:21.71]You can't spell my name without the dollar sign
+[00:25.42]Rainbow money, take whatever, yes, I'm colorblind
+[00:28.88]One, eight, zero, zero, he's so handsome, he's my hero
+[00:32.59](One, eight, zero, zero) It's that 1-800, hit my line
+[00:36.04]One, eight, zero, zero, he's so handsomе, he's my hero
+[00:39.78](One, еight, zero, zero) Let me 1-800, blow your mind
+[00:43.50]Eight wheels in the front, they some big toys
+[00:45.37]2025, it's the year of the it boy
+[00:47.23]Got a little money, yeah, got a little Bitcoin
+[00:49.09]She, she, she, she makin' me real coy
+[00:50.68]Never stoop too low, I don't sip Dunkin'
+[00:52.54]Quite nice top, I ain't talkin' no muffin
+[00:54.40]On a first date, stay trauma dumpin'
+[00:56.27]Blah, blah, blah, like somethin', somethin'
+[00:58.12]One pump, two pump, three pump
+[00:59.71]The way she workin' that shit, she left me comatose (Uh)
+[01:02.56]Three plus six is nine, this baby ain't talkin' 'bout tic-tac-toe
+[01:06.01]Uh, she a little freak, I guess I'm an animal, E-I-E-I-O
+[01:09.38]Two steppin' like Cotton Eye Joe (Uh, bbno$)
+[01:12.83]Don't fuck this shit up for me
+[01:14.60]Don't fuck this shit up for me
+[01:16.20]Don't fuck this shit up for me
+[01:18.05]Please, please, please, please
+[01:19.91]Don't fuck this shit up for me
+[01:21.78]Don't fuck this shit up for me
+[01:23.36]Don't fuck this shit up for me
+[01:25.22]Please, please, please
+[01:26.70]Still on that 1-800, hit me up for a good time
+[01:30.80]My shit bumps 'til it push me outta line
+[01:34.26]You can't spell my name without the dollar sign
+[01:37.98]Rainbow money, take whatever, yes, I'm colorblind
+[01:41.70]One, eight, zero, zero, he's so handsome, he's my hero
+[01:45.15](One, eight, zero, zero) It's that 1-800, hit my line
+[01:48.86]One, eight, zero, zero, he's so handsome, he's my hero
+[01:52.58](One, eight, zero, zero) Let me 1-800, blow your mind
+[01:56.32]Dick, dick, dick, dick, dick, dick
+[01:59.41]Yeah, dick real deadly, do a lil' damage
+[02:01.71]Got like twenty children, Nick Cannon
+[02:03.56]Fuck, I'm sexy, snap like sandwich
+[02:05.32]Hit a double threesome, ride a tandem
+[02:07.19]Got good DNA, shawty thick, got TNA
+[02:10.30]I'm makin' moves, no POA
+[02:12.06]Ain't bustin' quick, no ETA
+[02:13.92]It's either she or maybe her, I cannot pick, pick, pick, pick, pick
+[02:17.38]I got that Rolie Polie Olie, it go tick, tick, tick, tick, tick
+[02:20.83]I'm at the Nino playin' blackjack, always hit, hit, hit, hit, hit
+[02:24.56]If baby's broke, he's only doin' it for the bit, bit, bit, bit, bit
+[02:29.08]Don't fuck this shit up for me
+[02:31.13]Don't fuck this shit up for me
+[02:32.63]Don't fuck this shit up for me
+[02:34.30]Please, please, please, please
+[02:36.16]Don't fuck this shit up for me
+[02:38.28]Don't fuck this shit up for me
+[02:39.87]Don't fuck this shit up for me
+[02:41.74]Please, please, please
+[02:42.71]Still on that 1-800, hit me up for a good time
+[02:46.95]My shit bumps 'til it push me outta line
+[02:50.67]You can't spell my name without the dollar sign
+[02:54.39]Rainbow money, take whatever, yes, I'm colorblind
+[02:57.84]One, eight, zero, zero, he's so handsome, he's my hero
+[03:01.56](One, eight, zero, zero) It's that 1-800, hit my line
+[03:05.29]One, eight, zero, zero, he's so handsome, he's my hero
+[03:09.00](One, eight, zero, zero) Let me 1-800, blow your mind
+[03:12.39] pretty darn cool right?
+</script>
+
+<script>
+(function(){
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
+
+  function init(){
+    try{
+      // Year
+      var y=document.getElementById('y'); if(y) y.textContent=new Date().getFullYear();
+
+      // Eyebrow: Introducing ↔ Now Playing
+      var eyebrow=document.getElementById('eyebrow');
+      function setNowPlaying(on){
+        if(!eyebrow) return;
+        if(on){
+          eyebrow.innerHTML = '<strong id="npNow" class="flicker">Now Playing</strong> 1-800  - bbno$, Ironmouse';
+        }else{
+          eyebrow.textContent = 'Introducing';
+        }
+      }
+
+      // Theme toggle (Auto ↔ Starlight ↔ Space Gray). Label shows “Mousey” when variant active.
+      var KEY='ny_theme_v2';
+      var label=document.getElementById('themeLabel');
+      var toggle=document.getElementById('themeToggle');
+      var media=window.matchMedia('(prefers-color-scheme: dark)');
+      var mode=localStorage.getItem(KEY)||'auto'; // auto | starlight | spacegray
+      function system(){return media.matches?'spacegray':'starlight'}
+      function applyTheme(){ var t=(mode==='auto'? system(): mode); document.documentElement.setAttribute('data-theme', t); }
+      function setLabelFromState(){
+        if(document.documentElement.getAttribute('data-variant')==='mouse'){ if(label) label.textContent='Mousey'; }
+        else { if(label) label.textContent=(mode==='spacegray'?'Space Gray': mode.charAt(0).toUpperCase()+mode.slice(1)); }
+      }
+      applyTheme(); setLabelFromState();
+      media.addEventListener('change', function(){ if(mode==='auto'){ applyTheme(); setLabelFromState(); } });
+      if(toggle) toggle.addEventListener('click', function(){ mode = (mode==='auto')?'starlight': (mode==='starlight')?'spacegray':'auto'; localStorage.setItem(KEY, mode); applyTheme(); setLabelFromState(); });
+
+      // Smooth anchors
+      var links=document.querySelectorAll('a[href^="#"]');
+      for(var i=0;i<links.length;i++) links[i].addEventListener('click', function(e){ var id=this.getAttribute('href'); if(id.length>1){ e.preventDefault(); var el=document.querySelector(id); if(el) el.scrollIntoView({behavior:'smooth'}); } });
+
+      // ===== Typewriter with typos that get fixed =====
+      var TW={ kill:false, running:false };
+      function startTypewriter(){
+        var el=document.getElementById('typewriter'); if(!el) return;
+        TW.kill=false; TW.running=true; el.classList.remove('no-caret');
+        var out=''; var speed=50; var back=15; var i=0;
+
+        function typo(mistake, fix, pause, erase){
+          return [
+            {op:'type', text:mistake},
+            {op:'pause', ms: pause || 360},
+            {op:'back',  n: (erase!=null?erase:mistake.length)},
+            {op:'type', text:fix}
+          ];
+        }
+
+        var steps=[
+          {op:'type', text:'Cupertino-clean, dumb-approved. '},
+          ...typo('Starlgiht ', 'Starlight '),
+          {op:'type', text:'by day, '},
+          ...typo('Space Grray ', 'Space Gray '),
+          ...typo('by nigg ', 'by night, '),
+          ...typo('polsihed', 'polished, '),
+          {op:'type', text:'zero pop-ups, maximum '},
+          ...typo('brainasudhauihduhasjdalkjLJLKASD', 'braincells. '),
+          {op:'type', text:'Crafted with too much caffeine and a healthy amount of chapman (the cherry one).'}
+        ];
+
+        function next(){ if(TW.kill) return; i++; if(i>=steps.length){ TW.running=false; return; } step(steps[i]); }
+        function step(act){
+          if(TW.kill) return;
+          if(act.op==='type') type(act.text,0);
+          else if(act.op==='back') backspace(act.n);
+          else if(act.op==='pause') setTimeout(next, act.ms||300);
+        }
+        function type(s, idx){
+          if(TW.kill) return;
+          if(idx>=s.length){ next(); return; }
+          out+=s.charAt(idx); el.textContent=out;
+          setTimeout(function(){ type(s, idx+1); }, speed + Math.floor(Math.random()*14)-7);
+        }
+        function backspace(n){
+          if(TW.kill) return;
+          if(n<=0){ next(); return; }
+          out=out.slice(0,-1); el.textContent=out;
+          setTimeout(function(){ backspace(n-1); }, back);
+        }
+        step(steps[0]);
+      }
+      function stopTypewriter(){ TW.kill=true; TW.running=false; }
+      startTypewriter();
+
+      // ===== Footer rotation =====
+      (function footCycle(){
+        var node=document.getElementById('foot-rot'); if(!node) return;
+        var lines=[
+          'Powered by caffeine and questionable life choices.',
+          'Fueled by spite and silly little scripts.',
+          'Running on ramen, deadlines, and meowing.',
+          '90% fewer bugs* (*the other 10% are features).'
+        ];
+        var idx=0; node.textContent=lines[idx];
+        setInterval(function(){
+          node.style.opacity=0;
+          setTimeout(function(){ idx=(idx+1)%lines.length; node.textContent=lines[idx]; node.style.opacity=1; }, 480);
+        }, 3600);
+      })();
+
+      // ===== LRC lyric sync with fade =====
+      var lyricCtx={ on:false, audio:null, h1:null, orig:'', update:null, lines:[], lastIndex:-1 };
+      function parseLRC(txt){
+        var out=[]; if(!txt) return out;
+        var lines=txt.split(/\r?\n/);
+        for(var i=0;i<lines.length;i++){
+          var m=lines[i].match(/\[(\d{1,2}):(\d{2})(?:\.(\d{1,3}))?\](.*)/);
+          if(m){
+            var min=parseInt(m[1],10)||0;
+            var sec=parseInt(m[2],10)||0;
+            var ms=parseInt((m[3]||'0').padEnd(3,'0'),10)||0;
+            var t=min*60000+sec*1000+ms;
+            var text=(m[4]||'').trim();
+            out.push({t:t, text:text});
+          }
+        }
+        out.sort(function(a,b){return a.t-b.t});
+        return out;
+      }
+      function startLyric(){
+        var a=document.getElementById('mouseyAudio');
+        var s=document.getElementById('mouseyLRC');
+        var h=document.getElementById('heroTitle');
+        if(!a||!s||!h) return;
+        var txt=(s.textContent||s.innerText||'').trim();
+        if(!txt) return;
+        lyricCtx.audio=a; lyricCtx.h1=h; lyricCtx.orig=h.textContent; lyricCtx.lines=parseLRC(txt);
+        if(!lyricCtx.lines.length) return;
+        lyricCtx.on=true; lyricCtx.lastIndex=-1;
+
+        lyricCtx.update=function(){
+          var t=lyricCtx.audio.currentTime*1000;
+          var idx=-1;
+          for(var i=0;i<lyricCtx.lines.length;i++){
+            if(lyricCtx.lines[i].t<=t) idx=i; else break;
+          }
+          if(idx!==lyricCtx.lastIndex){
+            lyricCtx.lastIndex=idx;
+            var newText = idx>=0 ? lyricCtx.lines[idx].text : lyricCtx.orig;
+            // fade out → swap → fade in
+            lyricCtx.h1.style.opacity=0;
+            setTimeout(function(){
+              lyricCtx.h1.textContent=newText;
+              lyricCtx.h1.style.opacity=1;
+            }, 120);
+          }
+        };
+        a.addEventListener('timeupdate', lyricCtx.update);
+        a.addEventListener('seeked', lyricCtx.update);
+        a.addEventListener('play',  lyricCtx.update);
+      }
+      function stopLyric(){
+        if(!lyricCtx.on) return;
+        var a=lyricCtx.audio;
+        if(a && lyricCtx.update){
+          a.removeEventListener('timeupdate', lyricCtx.update);
+          a.removeEventListener('seeked', lyricCtx.update);
+          a.removeEventListener('play', lyricCtx.update);
+        }
+        if(lyricCtx.h1 && lyricCtx.orig){
+          lyricCtx.h1.style.opacity=1;
+          lyricCtx.h1.textContent=lyricCtx.orig;
+        }
+        lyricCtx.on=false;
+      }
+
+      // ===== Beat-synced "Now Playing" flicker (Web Audio) =====
+      var beat={ ctx:null, src:null, analyser:null, data:null, ema:0, last:0, raf:0, active:false };
+      function ensureAudioGraph(){
+        var a = document.getElementById('mouseyAudio');
+        if(!a) return;
+
+        var AC = window.AudioContext || window.webkitAudioContext;
+        if(!AC) return;
+        if(!beat.ctx) beat.ctx = new AC();
+        if(beat.ctx.state === 'suspended'){ beat.ctx.resume().catch(()=>{}); }
+
+        if(!beat.src){
+          try{
+            beat.src = beat.ctx.createMediaElementSource(a);
+            beat.analyser = beat.ctx.createAnalyser();
+            beat.analyser.fftSize = 1024;
+            beat.analyser.smoothingTimeConstant = 0.85;
+            beat.data = new Uint8Array(beat.analyser.fftSize);
+
+            // connect for analysis AND to speakers
+            beat.src.connect(beat.analyser);
+            beat.src.connect(beat.ctx.destination);
+          }catch(e){
+            // ignore duplicate source creation errors
+          }
+        }
+      }
+      function pulseNowPlaying(){
+        var np=document.getElementById('npNow');
+        if(!np) return;
+        np.classList.remove('beat'); // restart anim
+        void np.offsetWidth; // reflow
+        np.classList.add('beat');
+        setTimeout(function(){ np && np.classList.remove('beat'); }, 140);
+      }
+      function startBeat(){
+        ensureAudioGraph();
+        if(!beat.analyser) return;
+        beat.active=true; beat.ema=0; beat.last=0;
+        function loop(){
+          if(!beat.active) return;
+          beat.analyser.getByteTimeDomainData(beat.data);
+          var sum=0; for(var i=0;i<beat.data.length;i++){ var v=(beat.data[i]-128)/128; sum+=v*v; }
+          var rms=Math.sqrt(sum/beat.data.length);
+          beat.ema = beat.ema ? (beat.ema*0.93 + rms*0.07) : rms;
+          var now=performance.now();
+          if(rms > beat.ema*1.8 && (now - beat.last) > 180){
+            pulseNowPlaying(); beat.last=now;
+          }
+          beat.raf=requestAnimationFrame(loop);
+        }
+        beat.raf=requestAnimationFrame(loop);
+      }
+      function stopBeat(){
+        beat.active=false;
+        if(beat.raf) cancelAnimationFrame(beat.raf);
+      }
+
+      // ===== Variant switching + Mousey takeover =====
+      function smoothVariantSwitch(apply){ document.documentElement.classList.add('anim-colors'); apply(); setTimeout(function(){ document.documentElement.classList.remove('anim-colors'); }, 800); }
+      function tryPlayAudio(){
+        var a=document.getElementById('mouseyAudio'); if(!a) return;
+        a.play().catch(function(){ /* blocked? user needs a gesture */ });
+      }
+      function mouseTakeover(){
+        if(document.documentElement.getAttribute('data-variant')==='mouse') return;
+        smoothVariantSwitch(function(){ document.documentElement.setAttribute('data-variant','mouse'); setLabelFromState(); });
+        setNowPlaying(true);
+        startLyric(); startBeat(); tryPlayAudio();
+        stopTypewriter();
+        var el=document.getElementById('typewriter'); if(!el) return;
+        el.classList.remove('no-caret');
+        var cur=el.textContent||'';
+        (function back(){ if(cur.length===0){ return typeCTA(); } cur=cur.slice(0,-1); el.textContent=cur; setTimeout(back, 22); })();
+        function typeCTA(){
+          var prefix='DONATE PLASMAAAA NOWWWW — ';
+          var i=0; el.textContent='';
+          (function t(){ if(i<prefix.length){ el.textContent += prefix.charAt(i++); setTimeout(t, 50); } else { typeLink(); } })();
+        }
+        function typeLink(){
+          var a=document.createElement('a');
+          a.href='https://tiltify.com/@ironmouse/ironmouse';
+          a.target='_blank'; a.rel='noopener noreferrer'; a.style.whiteSpace='pre';
+          el.appendChild(a);
+          var link='tiltify.com/@ironmouse/ironmouse', j=0;
+          (function tl(){ if(j<link.length){ a.textContent+=link.charAt(j++); setTimeout(tl,42);} })();
+        }
+      }
+      function mouseRelease(){
+        if(document.documentElement.getAttribute('data-variant')!=='mouse') return;
+        smoothVariantSwitch(function(){ document.documentElement.removeAttribute('data-variant'); setLabelFromState(); });
+        setNowPlaying(false);
+        stopLyric(); stopBeat();
+        var a=document.getElementById('mouseyAudio'); if(a){ a.pause(); }
+        var el=document.getElementById('typewriter');
+        if(el){ el.textContent=''; el.classList.remove('no-caret'); }
+        startTypewriter();
+      }
+
+      // ===== Mobile/desktop unlock: first tap/click primes audio & context =====
+      (function primeAudioOnce(){
+        var a=document.getElementById('mouseyAudio'); if(!a) return;
+        function unlock(){
+          a.play().then(function(){ a.pause(); a.currentTime=0; }).catch(function(){});
+          ensureAudioGraph(); // build/resume AudioContext from a user gesture
+          window.removeEventListener('pointerdown', unlock, true);
+          window.removeEventListener('touchstart', unlock, true);
+          window.removeEventListener('click', unlock, true);
+        }
+        window.addEventListener('pointerdown', unlock, true);
+        window.addEventListener('touchstart', unlock, true);
+        window.addEventListener('click', unlock, true);
+      })();
+
+      // ===== Triggers =====
+      var seq=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'], idx2=0;
+      var buffer='';
+      window.addEventListener('keydown', function(e){
+        var tag=(document.activeElement&&document.activeElement.tagName||'').toLowerCase(); if(tag==='input'||tag==='textarea') return;
+        var k=e.key; if(k.length===1) k=k.toLowerCase();
+
+        // Konami confetti
+        if(k===seq[idx2] || k===seq[idx2].toLowerCase()){ idx2++; if(idx2===seq.length){ idx2=0; confetti(); return; } } else { idx2=0; }
+
+        // rolling alphanumeric buffer
+        if(/^[a-z0-9]$/.test(k)){
+          buffer=(buffer+k).slice(-12);
+          if(buffer.endsWith('1800')){ mouseTakeover(); buffer=''; return; }  // enter
+          if(buffer.endsWith('nyan')){ mouseRelease(); buffer=''; return; }   // exit
+          if(buffer.endsWith('meow')){ buffer=''; confetti(); return; }
+        }
+        if(k==='g' || k==='G'){ document.body.classList.toggle('gremlin'); }
+      });
+
+      // Logo triple-tap → Mousey; 7 taps → wobble
+      var taps=0, timer=null, logo=document.getElementById('logo');
+      if(logo){
+        function reset(){ taps=0; }
+        function onTap(){
+          clearTimeout(timer); taps++;
+          if(taps===3){ mouseTakeover(); taps=0; return; }
+          if(taps===7){ document.body.classList.toggle('gremlin'); taps=0; return; }
+          timer=setTimeout(reset, 650);
+        }
+        logo.addEventListener('click', onTap);
+        logo.addEventListener('touchstart', onTap, {passive:true});
+      }
+
+      // confetti
+      function confetti(){
+        for(var i=0;i<36;i++){
+          var s=document.createElement('div');
+          s.textContent=['✨','💗','⭐','🐟','🌸'][i%5];
+          s.style.position='fixed'; s.style.left=(Math.random()*100)+'%'; s.style.top='-10px';
+          s.style.fontSize=(12+Math.random()*16)+'px';
+          s.style.transition='transform 1.1s ease, opacity 1.1s ease'; s.style.zIndex='9999';
+          document.body.appendChild(s);
+          (function(el){
+            setTimeout(function(){
+              el.style.transform='translateY('+(window.innerHeight+40)+'px) rotate('+(Math.random()*360)+'deg)';
+              el.style.opacity='0';
+            }, 10);
+            setTimeout(function(){ el.parentNode && el.parentNode.removeChild(el); }, 1300);
+          })(s);
+        }
+      }
+    } catch(err){ console.error('init error', err); }
+  }
+})();
+</script>
+</body>
+</html>
