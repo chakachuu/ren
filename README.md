@@ -37,7 +37,3 @@ what started as a simple site is slowly becoming part OS-simulator, part playgro
 - explore how mood, time, and context can shift the feel of a webpage
 - keep a few secrets buried in the code… for those who dig deep, or stay up too late
 
-## 🖤 notes
-
-this repo is intentionally still messy, i’m letting it grow in public.
-all in all it's probably one of my best work so far so take a decent look at it, or maybe don't stare at it too much, it'll stare back at you.
