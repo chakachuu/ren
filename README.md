@@ -1,64 +1,43 @@
-# ren.dev — Cupertino-clean chaos
+# Ren’s Humble Abode 🏚️
 
-A minimalist, Apple-style personal site with **Starlight** / **Space Gray** themes, with some **delightful** twist.
-
-
----
-
-## Features
-
-- **Themes that behave**  
-  Auto, **Starlight**, and **Space Gray** with smooth color transitions and crisp typography.
-
-- **Beat-synced “Now Playing”**  
-  Web Audio–driven pulse on the “Now Playing” label. Not a fake loop—actually listens.
-
-- **Lyric line fade**  
-  Optional LRC support to gently morph the hero title line by line.
-
-- **Typewriter with chaos control**  
-  Intentionally scuffed typos that fix themselves mid-sentence. (Perfectionism with drama.)
-
-- **Footer quip rotator**  
-  “Powered by caffeine and questionable life choices.” and friends.
-
-- **Single-file simplicity**  
-  One `index.html`. No build. No frameworks. Just go.
-
-- **Tasteful easter eggs**  
-  Hidden interactions exist. No, they’re not in this README. Touch grass. Or the logo. Or neither. Who knows.
+a work-in-progress portfolio that decided to grow a personality along the way.  
+what started as a simple site is slowly becoming part OS-simulator, part playground, part mirror.  
 
 ---
 
-## Contents
 
-- `index.html` — the entire site, including styles and scripts
-- `logo.svg` — default mark (also works as favicon)
-- `1800.mp3` — audio track for the takeover (file name referenced in the page)
+## ✨ current features
+
+- **theme switching**  
+  light, dark, and a few… moods.    
+
+- **dynamic text**  
+  typewriter effects that aren’t always perfect.  
+  but hey nobody's perfect right?  
+
+- **responsive layout**  (hopefully)
+  designed to feel natural across devices, though the experience can shift in subtle ways, well onlly *time* will tell.  
+
+- **small details**  
+  rotating footers, smooth transitions, and playful microinteractions.  
+  little touches meant to keep things from feeling static.  
 
 ---
 
-## Credits
+## 🛠️ tech stack
 
-- Ironmouse fundraiser: <https://tiltify.com/@ironmouse/ironmouse>  
-- Typography & motion inspo: the ghost of Cupertino.
+- **HTML + CSS + JavaScript** (hand-rolled, caffeine-powered)  
+- **CSS variables** for instant theme swapping  
+- **AudioContext API** for experimenting with beat-synced effects  
 
----
+## 🎭 goals
 
-## License
+- build a portfolio that shows both design sense and technical playfulness
+- make UI/UX experiments feel polished enough to live on a “professional” site
+- explore how mood, time, and context can shift the feel of a webpage
+- keep a few secrets buried in the code… for those who dig deep, or stay up too late
 
-This project ships under the **Dumbass License v1.0**:
+## 🖤 notes
 
-- ✅ You can: fork it, yoink it, remix it, ship it, flex it.
-- ✅ You may roast the code. I do it daily.
-- ❗ You must: credit **Ren** somewhere visible (tattoos acceptable but not required).
-- 🚫 You may not: ship it ugly, add autoplay carousels, or summon 47 cookie popups.
-- 🧪 If it breaks: that’s a feature. If it works: that’s a miracle. If it’s both: ship it.
-- ☕ If you make $$$: buy me a coffee or at least pretend to feel guilty.
-- 🧑‍⚖️ If your lawyer asks: it’s **MIT**… with vibes.
-
-### Lawyers’ translation (boring but real)
-- **Code:** MIT — see [`LICENSE`](LICENSE).  
-- **Assets:** not MIT. `logo.svg` + any images/audio aren’t granted for reuse.  
-  `1800.mp3` is demo-only; don’t redistribute.  
-  Brand icons/logos are trademarks of their owners.  
+this repo is intentionally still messy, i’m letting it grow in public.
+all in all it's probably one of my best work so far so take a decent look at it, or maybe don't stare at it too much, it'll stare back at you.
