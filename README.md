@@ -1,4 +1,4 @@
-### What is this?
+## What is this?
 
 a work-in-progress portfolio that decided to grow a personality along the way.  
 what started as a simple site is slowly becoming part OS-simulator, part playground, part mirror.  
