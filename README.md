@@ -28,6 +28,8 @@ what started as a simple site is slowly becoming part OS-simulator, part playgro
 - **CSS variables** for instant theme swapping  
 - **AudioContext API** for experimenting with beat-synced effects  
 
+---
+
 ## 🎭 goals
 
 - build a portfolio that shows both design sense and technical playfulness
