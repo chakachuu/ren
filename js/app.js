@@ -486,6 +486,14 @@ async function init(){
     setInterval(checkWitchingHour, 60_000);
     document.addEventListener('visibilitychange', () => { if (!document.hidden) checkWitchingHour(); });
 
+    fetch('README.md')
+  .then(res => res.text())
+  .then(md => {
+    const box = document.getElementById('readmeBox');
+    if(box) box.innerHTML = marked.parse(md);
+  })
+  .catch(err => console.error('Failed to load README:', err));
+
     // ===== helpers =====
     function smoothVariantSwitch(apply){
       document.documentElement.classList.add('anim-colors');
