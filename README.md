@@ -15,8 +15,8 @@ what started as a simple site is slowly becoming part OS-simulator, part playgro
   typewriter effects that aren’t always perfect.  
   but hey nobody's perfect right?  
 
-- **responsive layout**  (hopefully)
-  designed to feel natural across devices, though the experience can shift in subtle ways, well onlly *time* will tell.  
+- **responsive layout (hopefully)**  
+  designed to feel natural across devices, though the experience can shift in subtle ways, well only *time* will tell.  
 
 - **small details**  
   rotating footers, smooth transitions, and playful microinteractions.  
