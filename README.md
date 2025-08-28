@@ -22,8 +22,6 @@ what started as a simple site is slowly becoming part OS-simulator, part playgro
   rotating footers, smooth transitions, and playful microinteractions.  
   little touches meant to keep things from feeling static.  
 
----
-
 ## 🛠️ tech stack
 
 - **HTML + CSS + JavaScript** (hand-rolled, caffeine-powered)  
@@ -36,4 +34,3 @@ what started as a simple site is slowly becoming part OS-simulator, part playgro
 - make UI/UX experiments feel polished enough to live on a “professional” site
 - explore how mood, time, and context can shift the feel of a webpage
 - keep a few secrets buried in the code… for those who dig deep, or stay up too late
-
