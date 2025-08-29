@@ -1,169 +1,169 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="starlight" data-variant="">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ren — Resume</title>
   <meta name="description" content="Front‑end & UI/UX engineer — portfolio resume for Ren" />
-  <meta property="og:title" content="Ren — Resume" />
-  <meta property="og:description" content="Front‑end & UI/UX engineer — sleek, Apple‑style builds, interactive UX, and AI companion experiments." />
-  <meta property="og:type" content="profile" />
+  <link rel="stylesheet" href="./css/styles.css" />
   <meta name="color-scheme" content="light dark" />
-  <!-- Hook your site-wide CSS. Change the href if your file is named differently. -->
-  <link rel="stylesheet" href="css/styles.css" />
-  <!-- Optional: print styles so it exports cleanly as PDF without needing extra CSS files. -->
-  <style>
-    @media print {
-      .no-print { display: none !important; }
-      .page { box-shadow: none !important; background: transparent !important; }
-      a { color: inherit; text-decoration: none; }
-    }
-  </style>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Ren",
-    "jobTitle": "Front-end & UI/UX Engineer",
-    "homeLocation": {"@type": "Place", "address": {"@type": "PostalAddress", "addressLocality": "Yerevan", "addressCountry": "AM"}},
-    "url": "https://chakachuu.github.io/ren/",
-    "sameAs": [
-      "https://github.com/chakachuu"
-    ],
-    "knowsAbout": ["UI/UX", "Front-end Development", "Web Animations", "Design Systems", "Accessibility", "JavaScript", "HTML", "CSS", "LLM integrations", "TTS", "GitHub Pages"]
-  }
-  </script>
+  <style>@media print{header, .no-print{display:none !important} .panel{box-shadow:none !important}}</style>
 </head>
-<body>
-  <!--
-    Minimal, CSS-agnostic markup.
-    This file assumes you already have a global styles.css.
-    Classes are generic (container, grid, section, chip) so they blend with your design.
-  -->
-  <main class="page container" id="top" aria-label="Resume">
-    <header class="header card space-y-2">
-      <h1 class="title">Ren</h1>
-      <p class="subtitle">Front‑end & UI/UX Engineer</p>
-      <div class="meta row wrap gap-sm">
-        <a href="mailto:youremail@example.com" class="chip">youremail@example.com</a>
-        <a href="https://github.com/chakachuu" class="chip" rel="me">github.com/chakachuu</a>
-        <span class="chip">Yerevan, Armenia</span>
+<body class="anim-colors">
+  <!-- Top nav (uses your header/nav styles) -->
+  <header>
+    <div class="nav wrap">
+      <a class="brand" href="./index.html"><i class="logo" aria-hidden="true"></i><strong>ren</strong></a>
+      <div class="links">
+        <a class="link" href="#summary">summary</a>
+        <a class="link" href="#skills">skills</a>
+        <a class="link" href="#experience">experience</a>
+        <a class="link" href="#projects">projects</a>
+        <a class="link" href="#education">education</a>
+        <button class="toggle" id="modeBtn" title="Toggle theme/variant"><span class="dot"></span>theme</button>
       </div>
-      <div class="no-print">
-        <nav class="row gap-sm">
-          <a href="#summary" class="link">Summary</a>
-          <a href="#skills" class="link">Skills</a>
-          <a href="#experience" class="link">Experience</a>
-          <a href="#projects" class="link">Projects</a>
-          <a href="#education" class="link">Education</a>
-        </nav>
-        <div class="row gap-sm">
-          <button class="button" onclick="window.print()">Download / Print PDF</button>
-          <a class="button ghost" href="./index.html">← Back to site</a>
+    </div>
+  </header>
+
+  <main class="wrap" id="top">
+    <!-- Hero -->
+    <section class="hero">
+      <p class="eyebrow">front‑end • ui/ux • motion</p>
+      <h1 id="heroTitle">Ren — Resume</h1>
+      <p class="lead">apple‑leaning interfaces, clean semantics, and performance‑friendly micro‑interactions. ships fast, ships polished.</p>
+      <div class="cta">
+        <a href="mailto:youremail@example.com" class="btn">contact</a>
+        <button onclick="window.print()" class="btn ghost no-print">print / pdf</button>
+      </div>
+    </section>
+
+    <!-- Summary panel -->
+    <section id="summary" class="grid">
+      <article class="panel">
+        <div class="inner">
+          <div class="text">
+            <h2>Summary</h2>
+            <p>Front‑end engineer focused on sleek, Apple‑style UI with glass surfaces, type systems, and motion that respects performance. Comfortable building no‑build microsites, refining accessibility, and iterating quickly with product sense. Recent work includes an OS‑style personal site, audio/lyric UI, and an AI companion exploring TTS + LLM expression.</p>
+            <p><strong>Location:</strong> Yerevan, Armenia · <strong>Availability:</strong> open to remote/front‑end roles</p>
+            <p><strong>Links:</strong> <a href="https://github.com/chakachuu">github.com/chakachuu</a> · <a href="https://chakachuu.github.io/ren/">site</a></p>
+          </div>
         </div>
+      </article>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills" class="grid">
+      <article class="panel">
+        <div class="inner">
+          <div class="text">
+            <h2>Skills</h2>
+            <ul>
+              <li><strong>Core:</strong> HTML, CSS, JavaScript (ES6+)</li>
+              <li><strong>UI/UX:</strong> prototyping, typography, motion/micro‑interactions, a11y (WCAG), responsive systems</li>
+              <li><strong>Frontend craft:</strong> state‑lite interactivity, audio APIs, typewriter/lyrics, windowed UI</li>
+              <li><strong>Tooling:</strong> Git/GitHub, GitHub Pages, Figma, basic Node tooling</li>
+              <li><strong>AI/Voice:</strong> LLM (Ollama) integration, Hume AI TTS experiments</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- Experience -->
+    <section id="experience" class="grid">
+      <article class="panel">
+        <div class="inner">
+          <div class="text">
+            <h2>Experience</h2>
+            <div class="job">
+              <h3>Trishula Tech — Front‑end & UI/UX</h3>
+              <p class="muted">2024 — Present · Yerevan (night shift)</p>
+              <ul>
+                <li>Built small front‑end features with a high bar for polish and interaction quality.</li>
+                <li>Shipped Apple‑style components (glass cards, toggles, windows) with responsive typography.</li>
+                <li>No‑build microsites: single‑file patterns for speed and easy maintenance.</li>
+                <li>Champion of a11y: semantic HTML, focus states, prefers‑reduced‑motion, color‑contrast.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects" class="grid">
+      <article class="panel">
+        <div class="inner">
+          <div class="text">
+            <h2>Selected Projects</h2>
+            <div class="proj">
+              <h3>ren — personal site (one‑pager)</h3>
+              <p><a href="https://chakachuu.github.io/ren/">Live</a></p>
+              <ul>
+                <li>Single‑file site with Starlight/Space Gray themes, lyric‑fade hero, and beat‑aware Now Playing.</li>
+                <li>Easter eggs, clean typography, and motion under strict performance budgets.</li>
+                <li>Deployed on GitHub Pages; zero build, zero frameworks.</li>
+              </ul>
+            </div>
+            <div class="proj">
+              <h3>“Nyan” — AI companion experiments</h3>
+              <p><a href="https://github.com/Open-LLM-VTuber/Open-LLM-VTuber">Inspiration</a></p>
+              <ul>
+                <li>Voice design with Hume AI TTS; prompt craft for tone and personality.</li>
+                <li>Local LLM (Ollama) prototyping with reactive UI hooks.</li>
+                <li>Explored webcam/trigger interactions and consent‑forward behavior.</li>
+              </ul>
+            </div>
+            <div class="proj">
+              <h3>OS‑style portfolio UX</h3>
+              <ul>
+                <li>Windowed interface with draggable panes, dock‑style nav, theme controls.</li>
+                <li>Snap areas, elastic drag, focus rings, and keyboard flows.</li>
+                <li>Guestbook with playful conditional replies.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- Education -->
+    <section id="education" class="grid">
+      <article class="panel">
+        <div class="inner">
+          <div class="text">
+            <h2>Education</h2>
+            <p>Self‑taught via documentation, design systems, and project work. Ongoing focus on motion, a11y, and modern CSS/JS.</p>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <footer>
+      <div class="wrap">
+        <p id="foot-rot">© <span id="y"></span> Ren — prints clean as PDF</p>
       </div>
-    </header>
-
-    <section id="summary" class="section card">
-      <h2>Summary</h2>
-      <p>
-        Front‑end engineer focused on sleek, Apple‑inspired UI with obsessive polish: glass surfaces, type systems, 
-        micro‑interactions, and performance‑friendly animations. Strong product sense and fast iteration cycles. 
-        Recent work includes an OS‑style personal site, interactive lyric/"Now Playing" components, and an AI companion project 
-        exploring TTS + LLM expression. Night‑shift hardened; ships clean and pragmatic.
-      </p>
-    </section>
-
-    <section id="skills" class="section card">
-      <h2>Skills</h2>
-      <div class="grid two">
-        <ul>
-          <li><strong>Core:</strong> HTML, CSS, JavaScript (ES6+), Web Components</li>
-          <li><strong>Design/UX:</strong> Prototyping, motion, typography, accessibility (WCAG), responsive systems</li>
-          <li><strong>Frontend craft:</strong> State-lite interactivity, audio APIs, typewriter/lyric effects</li>
-        </ul>
-        <ul>
-          <li><strong>Tooling:</strong> Git/GitHub, GitHub Pages, Figma, basic Node tooling</li>
-          <li><strong>AI/Voice:</strong> LLM integration (Ollama), Hume AI TTS experiments</li>
-          <li><strong>Ops:</strong> Static hosting, performance budgets, lighthouse hygiene</li>
-        </ul>
-      </div>
-      <div class="row wrap gap-sm chips">
-        <span class="chip">UI/UX</span>
-        <span class="chip">Accessibility</span>
-        <span class="chip">Animations</span>
-        <span class="chip">Audio APIs</span>
-        <span class="chip">Design Systems</span>
-        <span class="chip">LLM + TTS</span>
-      </div>
-    </section>
-
-    <section id="experience" class="section card">
-      <h2>Experience</h2>
-      <article class="item">
-        <header class="row space-between">
-          <h3>Trishula Tech — Front‑end & UI/UX</h3>
-          <span class="muted">2024 — Present · Yerevan (night shift)</span>
-        </header>
-        <ul class="bullets">
-          <li>Led small front‑end initiatives with a high bar for polish and interaction quality.</li>
-          <li>Prototyped and shipped Apple‑style components (glass cards, toggles, windows) with responsive typography.</li>
-          <li>Built internal pages/no‑build microsites using a single‑file approach for easy maintenance and speed.</li>
-          <li>Championed a11y: semantic HTML, focus states, reduced‑motion support, and color‑contrast checks.</li>
-        </ul>
-      </article>
-    </section>
-
-    <section id="projects" class="section card">
-      <h2>Selected Projects</h2>
-      <article class="item">
-        <header class="row space-between">
-          <h3>ren — personal site (one‑pager)</h3>
-          <a class="link" href="https://chakachuu.github.io/ren/">Live</a>
-        </header>
-        <ul class="bullets">
-          <li>Single‑file site with Starlight/Space Gray themes, lyric‑fade hero, and beat‑aware Now Playing.</li>
-          <li>Subtle Easter eggs, clean typography, and tasteful motion within strict performance budgets.</li>
-          <li>Deployed on GitHub Pages; zero build, zero frameworks, fast cold loads.</li>
-        </ul>
-      </article>
-      <article class="item">
-        <header class="row space-between">
-          <h3>“Nyan” — AI companion experiments</h3>
-          <a class="link" href="https://github.com/Open-LLM-VTuber/Open-LLM-VTuber">Inspiration</a>
-        </header>
-        <ul class="bullets">
-          <li>Voice design & expressivity trials using Hume AI TTS; prompt craft for tone, cadence, and personality.</li>
-          <li>Local LLM prototyping (Ollama) for fast iteration, with UI hooks for reactive, emotional responses.</li>
-          <li>Explored webcam/trigger interactions and UX for consent‑forward companion behavior.</li>
-        </ul>
-      </article>
-      <article class="item">
-        <header class="row space-between">
-          <h3>OS‑style portfolio UX</h3>
-          <a class="link" href="#">Case study</a>
-        </header>
-        <ul class="bullets">
-          <li>Windowed interface with draggable panes, dock‑style navigation, and theme controls.</li>
-          <li>Refined interaction details: snap areas, elastic drag, focus rings, and keyboard flows.</li>
-          <li>Guestbook with playful Easter eggs and conditional replies.</li>
-        </ul>
-      </article>
-    </section>
-
-    <section id="education" class="section card">
-      <h2>Education</h2>
-      <p>Self‑taught front‑end & UI/UX via hands‑on projects, documentation, and design systems. Ongoing practice in motion, a11y, and modern CSS/JS.</p>
-    </section>
-
-    <footer class="section muted center no-print">
-      <p>© <span id="y"></span> Ren — built with semantic HTML, prints clean as PDF. <a href="#top">Back to top</a></p>
     </footer>
   </main>
 
   <script>
-    // tiny util for the footer year
+    // footer year
     document.getElementById('y').textContent = new Date().getFullYear();
+
+    // simple theme/variant cycler to demo your CSS tokens
+    (function(){
+      const btn = document.getElementById('modeBtn');
+      const root = document.documentElement;
+      const themes = ['starlight','spacegray'];
+      const variants = ['', 'mouse', 'emo'];
+      let ti = 0, vi = 0;
+      btn?.addEventListener('click', () => {
+        ti = (ti + 1) % themes.length;
+        vi = (vi + 1) % variants.length;
+        root.setAttribute('data-theme', themes[ti]);
+        root.setAttribute('data-variant', variants[vi]);
+      });
+    })();
   </script>
 </body>
 </html>
