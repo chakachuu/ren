@@ -1,81 +1,525 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ren | Resume</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Renaldi Chaka Bagastama — Interactive Resume</title>
+  <meta name="description" content="Interactive Cupertino-style resume for Renaldi Chaka Bagastama" />
   <style>
+    :root {
+      --bg: 238, 241, 245;
+      --fg: 20, 22, 25;
+      --muted: 110, 115, 120;
+      --tint: 0, 122, 255;
+      --accent: 88, 86, 214;
+      --card: 255, 255, 255;
+      --glass: 255, 255, 255, 0.7;
+      --shadow: 15, 17, 19;
+    }
+    [data-theme="dark"] {
+      --bg: 12, 13, 15;
+      --fg: 240, 241, 245;
+      --muted: 160, 165, 170;
+      --tint: 10, 132, 255;
+      --accent: 94, 92, 230;
+      --card: 28, 29, 34;
+      --glass: 24, 25, 30, 0.45;
+      --shadow: 0, 0, 0;
+    }
+    [data-mood="soft"] { --tint: 255, 159, 243; --accent: 255, 107, 129; }
+    [data-mood="mono"] { --tint: 180, 180, 180; --accent: 120, 120, 120; filter: grayscale(0.9); }
+    [data-mood="emo"]  { --tint: 255, 55, 95;  --accent: 255, 105, 180; }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
     body {
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 2rem;
-      line-height: 1.6;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      color: rgb(var(--fg));
+      background: radial-gradient(1200px 800px at 10% 0%, rgba(var(--tint), .12), rgba(var(--bg), 1) 40%),
+                  radial-gradient(1000px 700px at 100% 100%, rgba(var(--accent), .12), rgba(var(--bg), 1) 50%);
+      background-color: rgb(var(--bg));
+      transition: background-color .3s ease, color .2s ease, filter .2s ease;
     }
-    h1, h2, h3 {
-      margin-bottom: 0.25em;
+
+    /* Progress bar */
+    .progress {
+      position: fixed; inset: 0 0 auto 0; height: 3px; z-index: 60;
+      background: linear-gradient(to right, rgba(var(--tint), .6), rgba(var(--accent), .9));
+      transform: scaleX(0); transform-origin: 0 50%;
+      transition: transform .1s linear;
     }
-    h1 { font-size: 2rem; }
-    h2 { margin-top: 1.5em; font-size: 1.25rem; border-bottom: 1px solid var(--border); padding-bottom: .25em; }
-    .section { margin-bottom: 2rem; }
-    .contact { font-size: .95rem; color: var(--muted); }
-    ul { margin: .5em 0 0 1.2em; }
+
+    /* Splash Screen */
+    .splash {
+      position: fixed; inset: 0; display: grid; place-items: center; z-index: 50;
+      background: linear-gradient(180deg, rgba(var(--bg),1) 0%, rgba(var(--bg),.98) 100%);
+    }
+    .splash-inner { text-align: center; }
+    .logo-mark {
+      width: 68px; height: 68px; margin: 0 auto 12px; border-radius: 20px;
+      background: linear-gradient(135deg, rgba(var(--tint), .85), rgba(var(--accent), .85));
+      box-shadow: 0 18px 40px rgba(var(--shadow), .22), inset 0 1px 0 rgba(255,255,255,.6);
+      position: relative; overflow: hidden;
+    }
+    .logo-mark::after {
+      content: ""; position: absolute; inset: -40%; transform: rotate(25deg);
+      background: linear-gradient(90deg, transparent 30%, rgba(255,255,255,.4), transparent 70%);
+      animation: shimmer 1.6s ease-in-out infinite;
+    }
+    @keyframes shimmer { 0%{ transform: translateX(-120%) rotate(25deg); } 100%{ transform: translateX(120%) rotate(25deg); } }
+
+    .spinner {
+      width: 20px; height: 20px; margin: 14px auto 0; border-radius: 50%;
+      border: 2px solid rgba(0,0,0,.08); border-top-color: rgb(var(--tint));
+      animation: spin .9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .splash h1 { margin: 8px 0 4px; font-size: 18px; letter-spacing: .2px; }
+    .splash p { margin: 0; color: rgb(var(--muted)); font-size: 13px; }
+    .splash.fade-out { animation: fadeOut .5s ease forwards; }
+    @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
+
+    /* Frame */
+    .shell { max-width: 980px; margin: 40px auto; padding: 20px; }
+
+    .window {
+      position: relative;
+      background: rgba(var(--glass));
+      backdrop-filter: saturate(180%) blur(22px);
+      -webkit-backdrop-filter: saturate(180%) blur(22px);
+      border: 1px solid rgba(255,255,255,.4);
+      border-radius: 22px;
+      box-shadow: 0 20px 50px rgba(var(--shadow), .18), inset 0 1px 0 rgba(255,255,255,.6);
+      overflow: hidden;
+      transform: translateY(8px);
+      animation: dropIn .6s cubic-bezier(.2,.8,.2,1) .2s both;
+    }
+    @keyframes dropIn { from { opacity: 0; transform: translateY(18px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+    .chrome { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid rgba(0,0,0,.06); background: linear-gradient(to bottom, rgba(255,255,255,.65), rgba(255,255,255,.35)); }
+    .lights { display: flex; gap: 8px; }
+    .dot { width: 12px; height: 12px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(0,0,0,.15); cursor: pointer; }
+    .red { background: #ff5f57; }
+    .yellow { background: #ffbd2e; }
+    .green { background: #28c840; }
+
+    .segmented { margin-left: auto; display: inline-flex; border-radius: 10px; background: rgba(255,255,255,.6); border: 1px solid rgba(0,0,0,.1); overflow: hidden; }
+    .segmented button { appearance: none; border: 0; background: transparent; padding: 6px 10px; font-size: 12px; color: rgb(var(--fg)); cursor: pointer; }
+    .segmented button[aria-pressed="true"] { background: rgba(var(--tint), .15); color: rgb(var(--tint)); }
+
+    .bar { display: flex; gap: 10px; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid rgba(0,0,0,.05); }
+    .pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px; border: 1px solid rgba(0,0,0,.1); background: rgba(255,255,255,.6); box-shadow: 0 1px 0 rgba(255,255,255,.6) inset; font-size: 13px; transition: transform .08s ease; }
+    .pill:hover { transform: translateY(-1px); }
+
+    .content { padding: 24px; display: grid; grid-template-columns: 1.1fr 1.6fr; gap: 22px; }
+    @media (max-width: 900px){ .content { grid-template-columns: 1fr; } }
+
+    h1, h2 { margin: 0; font-weight: 700; letter-spacing: -0.02em; }
+    h1 { font-size: 28px; }
+    h2 { font-size: 16px; color: rgb(var(--tint)); margin-bottom: 8px; }
+
+    .muted { color: rgb(var(--muted)); }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+
+    .card { border-radius: 18px; border: 1px solid rgba(0,0,0,.06); background: rgba(255,255,255,.6); box-shadow: 0 6px 18px rgba(var(--shadow), .08), inset 0 1px 0 rgba(255,255,255,.6); padding: 14px 14px 10px 14px; opacity: 0; transform: translateY(10px); }
+    .card.reveal { animation: fadeUp .6s cubic-bezier(.2,.8,.2,1) both; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+    .list { margin: 8px 0 0 0; padding: 0 0 0 20px; }
+    .list li { margin: 4px 0; }
+
+    .chip { display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; background: rgba(var(--tint), .12); color: rgb(var(--tint)); font-size: 12px; transition: transform .08s ease, box-shadow .2s ease; }
+    .chip:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(var(--shadow), .12); }
+    .chip.muted { background: rgba(0,0,0,.06); color: rgb(var(--fg)); }
+
+    .link { color: rgb(var(--tint)); text-decoration: none; border-bottom: 1px solid rgba(var(--tint), .35); }
+    .link:hover { border-bottom-color: rgba(var(--tint), .8); }
+
+    .footer { padding: 12px 18px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+
+    .btn { appearance: none; border: 0; cursor: pointer; background: linear-gradient(to bottom, rgba(255,255,255,.9), rgba(255,255,255,.7)); border: 1px solid rgba(0,0,0,.1); border-radius: 14px; padding: 10px 12px; font-size: 13px; box-shadow: 0 1px 0 rgba(255,255,255,.7) inset, 0 4px 12px rgba(var(--shadow), .12); transition: transform .04s ease, box-shadow .2s ease; }
+    .btn:active { transform: translateY(1px); box-shadow: 0 1px 0 rgba(255,255,255,.7) inset, 0 2px 8px rgba(var(--shadow), .1); }
+
+    /* Command palette */
+    .palette { position: fixed; inset: 0; display: none; place-items: center; background: rgba(0,0,0,.2); backdrop-filter: blur(2px); }
+    .palette.open { display: grid; }
+    .palette .panel { width: min(680px, 92vw); background: rgba(var(--glass)); backdrop-filter: saturate(180%) blur(18px); border: 1px solid rgba(255,255,255,.5); border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.25); }
+    .palette input { width: 100%; padding: 12px 14px; border: 0; outline: none; background: rgba(255,255,255,.7); font-size: 14px; border-bottom: 1px solid rgba(0,0,0,.06); }
+    .palette ul { list-style: none; margin: 0; padding: 6px; max-height: 300px; overflow: auto; }
+    .palette li { padding: 10px 10px; border-radius: 10px; cursor: pointer; display:flex; justify-content: space-between; }
+    .palette li:hover, .palette li[aria-selected="true"] { background: rgba(0,0,0,.06); }
+
+    .kbd { font-family: ui-monospace, Menlo, SFMono-Regular, Monaco, Consolas, "Liberation Mono", monospace; font-size: 12px; padding:2px 6px; border-radius: 6px; background: rgba(0,0,0,.06); border:1px solid rgba(0,0,0,.08) }
+
+    /* hearts and animations */
+    .heart { position: fixed; pointer-events: none; font-size: 14px; animation: float 1.2s ease forwards; opacity: .8; }
+    @keyframes float { to { transform: translateY(-80px) scale(1.1); opacity: 0; } }
+    .bounce { animation: pop .25s ease; }
+    @keyframes pop { 0%{ transform: scale(1); } 50%{ transform: scale(1.05); } 100%{ transform: scale(1); } }
+    .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: rgba(255,255,255,.9); color: rgb(var(--fg)); border: 1px solid rgba(0,0,0,.1); border-radius: 12px; padding: 8px 12px; box-shadow: 0 10px 30px rgba(0,0,0,.18); }
+
+    @media print {
+      body { background: white !important; filter: none !important; }
+      .chrome, .footer, .segmented, .palette, .splash, .progress { display: none !important; }
+      .window { box-shadow: none !important; border: 0 !important; }
+      .card { background: white !important; box-shadow: none !important; border: 0 !important; }
+    }
   </style>
 </head>
-<body>
+<body data-theme="light" data-mood="default">
+  <!-- Progress -->
+  <div class="progress" id="progress"></div>
 
-  <h1>Renaldi Chaka Bagastama</h1>
-  <div class="contact">
-    Yerevan, Armenia · ren@example.com · github.com/chakachuu
+  <!-- Splash Screen -->
+  <div class="splash" id="splash" aria-hidden="false">
+    <div class="splash-inner">
+      <div class="logo-mark"></div>
+      <h1>Loading Resume</h1>
+      <p>Warming up the glass…</p>
+      <div class="spinner" aria-hidden="true"></div>
+    </div>
   </div>
 
-  <div class="section">
-    <h2>Summary</h2>
-    <p>
-      Tech worker with strong focus on front-end design, interactive UI/UX, and experimental web projects.
-      Experienced in blending clean design with playful micro-features and hidden interactivity.
-      Building toward a career that combines design instincts with hands-on development.
-    </p>
+  <div class="shell" aria-live="polite">
+    <div class="window" id="win">
+      <div class="chrome">
+        <div class="lights">
+          <div class="dot red" title="Close"></div>
+          <div class="dot yellow" title="Minimize"></div>
+          <div class="dot green" title="Full"></div>
+        </div>
+        <div class="segmented" role="tablist" aria-label="Theme">
+          <button id="lightBtn" aria-pressed="true" title="Light">Light</button>
+          <button id="darkBtn" aria-pressed="false" title="Dark">Dark</button>
+        </div>
+      </div>
+
+      <div class="bar">
+        <div class="row">
+          <span class="pill"><strong id="name">Renaldi Chaka Bagastama</strong></span>
+          <span class="pill muted">Yerevan, Armenia</span>
+          <a class="pill link" href="mailto:renaldichakab@gmail.com" id="email">renaldichakab@gmail.com</a>
+        </div>
+        <div class="row">
+          <a class="pill link" target="_blank" href="https://github.com/chakachuu">github.com/chakachuu</a>
+          <a class="pill link" target="_blank" href="https://chakachuu.github.io/ren">chakachuu.github.io/ren</a>
+        </div>
+      </div>
+
+      <div class="bar" style="gap:12px; justify-content: flex-start;">
+        <div class="pill">
+          <input id="filter" placeholder="Filter content (e.g., skills, project, experience)" style="border:0;background:transparent;outline:none;font-size:13px;" />
+        </div>
+        <span class="muted">Press <span class="kbd">⌘</span>/<span class="kbd">Ctrl</span> + <span class="kbd">K</span> for commands</span>
+      </div>
+
+      <div class="content" id="content">
+        <section class="card" data-section="about">
+          <h2>About Me</h2>
+          <p class="muted">I am a front-end developer who cares about design as much as code. I make interfaces that feel clear and simple, with enough detail to feel alive without being overdone. My background is a mix of digital marketing and customer service, so I have had to sell the dream and also deal with the fallout. That taught me how people actually experience products and how to design with empathy instead of buzzwords. My portfolio is not only static—it has a few hidden moods for curious people.</p>
+        </section>
+
+        <section class="card" data-section="skills">
+          <h2>Skills</h2>
+          <div class="row" style="margin-top:6px">
+            <span class="chip">HTML</span>
+            <span class="chip">CSS</span>
+            <span class="chip">JavaScript</span>
+            <span class="chip">TypeScript</span>
+            <span class="chip">React</span>
+            <span class="chip">Tailwind</span>
+            <span class="chip">Figma</span>
+            <span class="chip">Photoshop</span>
+            <span class="chip">After Effects</span>
+            <span class="chip">Premiere Pro</span>
+            <span class="chip muted">GitHub</span>
+            <span class="chip muted">CMS customization</span>
+            <span class="chip muted">Micro-interactions</span>
+            <span class="chip muted">Typography</span>
+            <span class="chip muted">User flows</span>
+          </div>
+        </section>
+
+        <section class="card" data-section="experience">
+          <h2>Experience</h2>
+          <div>
+            <p><strong>Customer Service Representative</strong><br>
+            Trishula Tech — Yerevan, Armenia • On-site • 2024 to Present</p>
+            <ul class="list">
+              <li>Work with fintech and tech clients</li>
+              <li>Turn customer frustration into insights for the team</li>
+              <li>Learn what users actually value</li>
+            </ul>
+          </div>
+          <div style="margin-top:10px">
+            <p><strong>Digital Marketing Specialist</strong><br>
+            BRINS Insurance — Indonesia • Remote/Hybrid • 2022 to 2023</p>
+            <ul class="list">
+              <li>Plan and run online campaigns</li>
+              <li>Improve brand presence on the web</li>
+              <li>Balance safe corporate tone with design that does not look like wallpaper</li>
+            </ul>
+          </div>
+          <div style="margin-top:10px">
+            <p><strong>Digital Marketing Specialist</strong><br>
+            Robot & Co. Bar & Lounge — Indonesia • Remote/Hybrid • 2020 to 2022</p>
+            <ul class="list">
+              <li>Manage digital campaigns for hospitality</li>
+              <li>Translate venue vibe into a digital experience</li>
+              <li>Learn that even websites need atmosphere</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="card" data-section="project">
+          <h2>Project</h2>
+          <p><strong>Personal Portfolio Website</strong> — <a class="link" target="_blank" href="https://chakachuu.github.io/ren">chakachuu.github.io/ren</a></p>
+          <ul class="list">
+            <li>Build a portfolio that is clean and very me</li>
+            <li>Use React, TypeScript, and Tailwind for a lightweight responsive build</li>
+            <li>Focus on typography, layout, and subtle motion</li>
+            <li>The site looks simple yet reveals more to explorers</li>
+          </ul>
+        </section>
+
+        <section class="card" data-section="interests">
+          <h2>Interests</h2>
+          <div class="row" style="margin-top:6px">
+            <span class="chip muted">Interfaces that respect time</span>
+            <span class="chip muted">Motion with restraint</span>
+            <span class="chip muted">Hidden layers in design</span>
+            <span class="chip muted">Collecting small design details</span>
+          </div>
+        </section>
+      </div>
+
+      <div class="footer">
+        <div class="row">
+          <button class="btn" id="copyEmail">Copy Email</button>
+          <button class="btn" id="downloadMd">Download Markdown</button>
+          <button class="btn" id="printBtn">Print to PDF</button>
+        </div>
+        <div class="row muted">
+          <span class="kbd">⌘</span> + <span class="kbd">K</span> for commands
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="section">
-    <h2>Experience</h2>
-    <h3>Trishula Tech — Customer Service Representative</h3>
-    <p><em>2024 – Present</em></p>
-
-    <h3>Robot&Co. Bar & Lounge — Digital Marketing</h3>
-    <p><em>2023 – 2024</em></p>
-
-    <h3>BRINS — Digital Marketing</h3>
-    <p><em>2022 – 2023</em></p>
-
-    <h3>Side Projects</h3>
-    <ul>
-      <li>Personal “OS-style” portfolio site with interactive themes and hidden easter eggs, Find it <a href="https://chakachuu.github.io/ren">here</a></li>
-      <!--<li>AI Companion prototype integrating Hume AI for expressive voice output and Ollama for LLM backend.</li>-->
-      <li>UI/UX experiments inspired by Cupertino/FydeOS aesthetics, with draggable tabs, login screens, and guestbook features.</li>
-    </ul>
+  <!-- Command palette -->
+  <div class="palette" id="palette" aria-hidden="true">
+    <div class="panel">
+      <input id="paletteInput" placeholder="Type a command" aria-label="Command palette" />
+      <ul id="paletteList"></ul>
+    </div>
   </div>
 
-  <div class="section">
-    <h2>Skills</h2>
-    <ul>
-      <li>Front-end: HTML, CSS, JavaScript</li>
-      <li>Design: UI/UX, responsive layouts, theming with CSS variables</li>
-      <li>Prototyping: building OS-like interfaces, interactive Easter eggs</li>
-      <li>Tools: GitHub Pages, Node.js, basic back-end scripting</li>
-      <li>Media: Adobe Creative Suite (After Effects, Premiere Pro, Photoshop)</li>
-    </ul>
-  </div>
+  <script>
+    const root = document.body;
+    const lightBtn = document.getElementById('lightBtn');
+    const darkBtn = document.getElementById('darkBtn');
+    const emailEl = document.getElementById('email');
+    const copyEmail = document.getElementById('copyEmail');
+    const printBtn = document.getElementById('printBtn');
+    const downloadMd = document.getElementById('downloadMd');
+    const nameEl = document.getElementById('name');
+    const splash = document.getElementById('splash');
+    const progress = document.getElementById('progress');
+    const filterInput = document.getElementById('filter');
+    const contentEl = document.getElementById('content');
 
-  <!--<div class="section">
-    <h2>Education</h2>
-    <p>Self-taught exploration in design & web development.</p>
-  </div>-->
+    // Splash: quick warm-up
+    window.addEventListener('load', () => {
+      setTimeout(() => splash.classList.add('fade-out'), 500);
+      setTimeout(() => splash.remove(), 1100);
+    });
 
-  <footer style="margin-top:3rem; font-size:.9rem; color:var(--muted);">
-    This resume is a living document — last updated 2025.  
-  </footer>
+    // Scroll progress
+    function updateProgress() {
+      const st = window.scrollY;
+      const dh = document.documentElement.scrollHeight - window.innerHeight;
+      const p = dh > 0 ? st / dh : 0;
+      progress.style.transform = 'scaleX(' + p + ')';
+    }
+    updateProgress();
+    window.addEventListener('scroll', updateProgress);
+    window.addEventListener('resize', updateProgress);
 
+    // Theme
+    function setTheme(mode){
+      root.setAttribute('data-theme', mode);
+      lightBtn.setAttribute('aria-pressed', mode==='light');
+      darkBtn.setAttribute('aria-pressed', mode==='dark');
+      localStorage.setItem('theme', mode);
+    }
+    lightBtn.onclick = () => setTheme('light');
+    darkBtn.onclick = () => setTheme('dark');
+    const savedTheme = localStorage.getItem('theme');
+    if(savedTheme) setTheme(savedTheme);
+
+    // Mood
+    const moods = ['default','soft','mono','emo'];
+    function setMood(m){ root.setAttribute('data-mood', m); localStorage.setItem('mood', m); if(m==='soft') hearts(); }
+    function cycleMood(){ const cur = root.getAttribute('data-mood') || 'default'; const idx = moods.indexOf(cur); setMood(moods[(idx+1)%moods.length]); }
+    const savedMood = localStorage.getItem('mood');
+    if(savedMood) setMood(savedMood);
+
+    // Reveal on scroll
+    const cards = document.querySelectorAll('.card');
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('reveal'); io.unobserve(e.target); } });
+    }, {rootMargin: '0px 0px -10% 0px', threshold: .1});
+    cards.forEach(c=>io.observe(c));
+
+    // Hearts for Soft mood
+    function hearts(){ for(let i=0;i<8;i++){ const h=document.createElement('div'); h.className='heart'; h.textContent='❤'; h.style.left=(Math.random()*80+10)+'vw'; h.style.top=(Math.random()*60+30)+'vh'; h.style.color=getComputedStyle(document.documentElement).getPropertyValue('--tint'); document.body.appendChild(h); setTimeout(()=>h.remove(),1200);} }
+
+    // Micro helpers
+    function bounce(el){ el.classList.add('bounce'); setTimeout(()=>el.classList.remove('bounce'), 260); }
+    function toast(msg){ const t=document.createElement('div'); t.className='toast'; t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(), 1600); }
+
+    // Copy email
+    copyEmail.onclick = async () => { await navigator.clipboard.writeText(emailEl.textContent.trim()); bounce(copyEmail); toast('Email copied'); };
+
+    // Print to PDF
+    printBtn.onclick = () => { window.print(); };
+
+    // Generate Markdown
+    function generateMarkdown(){
+      return `# Renaldi Chaka Bagastama\n\n`+
+`**Location:** Yerevan, Armenia\n\n`+
+`**Email:** renaldichakab@gmail.com\n\n`+
+`**GitHub:** github.com/chakachuu\n\n`+
+`**Portfolio:** chakachuu.github.io/ren\n\n`+
+`## About Me\n\n`+
+`I am a front-end developer who cares about design as much as code. I make interfaces that feel clear and simple, with enough detail to feel alive without being overdone. My background is a mix of digital marketing and customer service, so I have had to sell the dream and also deal with the fallout. That taught me how people actually experience products and how to design with empathy instead of buzzwords. My portfolio is not only static—it has a few hidden moods for curious people.\n\n`+
+`## Skills\n\n`+
+`- Front-End: HTML, CSS, JavaScript, TypeScript, React, Tailwind\n`+
+`- UI/UX: Typography, motion, micro-interactions, user flows\n`+
+`- Design & Media: Figma, Photoshop, After Effects, Premiere Pro\n`+
+`- Tools: GitHub, CMS customization\n`+
+`- Approach: Minimal, intentional, performance-minded\n\n`+
+`## Experience\n\n`+
+`**Customer Service Representative**\n`+
+`Trishula Tech — Yerevan, Armenia | On-site | 2024 to Present\n`+
+`- Work with fintech and tech clients\n`+
+`- Turn customer frustration into insights for the team\n`+
+`- Learn what users actually value\n\n`+
+`**Digital Marketing Specialist**\n`+
+`BRINS Insurance — Indonesia | Remote/Hybrid | 2022 to 2023\n`+
+`- Plan and run online campaigns\n`+
+`- Improve brand presence on the web\n`+
+`- Balance safe corporate tone with design that does not look like wallpaper\n\n`+
+`**Digital Marketing Specialist**\n`+
+`Robot & Co. Bar & Lounge — Indonesia | Remote/Hybrid | 2020 to 2022\n`+
+`- Manage digital campaigns for hospitality\n`+
+`- Translate venue vibe into a digital experience\n`+
+`- Learn that even websites need atmosphere\n\n`+
+`## Project\n\n`+
+`**Personal Portfolio Website — chakachuu.github.io/ren**\n`+
+`- Build a portfolio that is clean and very me\n`+
+`- Use React, TypeScript, and Tailwind for a lightweight responsive build\n`+
+`- Focus on typography, layout, and subtle motion\n`+
+`- The site looks simple yet reveals more to explorers\n\n`+
+`## Interests\n\n`+
+`- Interfaces that respect time\n`+
+`- Motion with restraint\n`+
+`- Hidden layers in design\n`+
+`- Collecting small design details\n`;
+    }
+
+    // Download Markdown
+    downloadMd.onclick = () => {
+      const md = generateMarkdown();
+      const blob = new Blob([md], {type: 'text/markdown'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'renaldi_resume.md';
+      document.body.appendChild(a); a.click(); a.remove();
+      toast('Markdown downloaded');
+    };
+
+    // Window dots
+    document.querySelector('.dot.red').addEventListener('click', ()=>{ document.getElementById('win').style.transform='scale(.98)'; setTimeout(()=>document.getElementById('win').style.transform='', 140); toast('Nice try'); });
+    document.querySelector('.dot.yellow').addEventListener('click', ()=>{ cycleMood(); toast('Mood toggled'); });
+    document.querySelector('.dot.green').addEventListener('click', ()=>{ setTheme(root.getAttribute('data-theme')==='light'?'dark':'light'); });
+
+    // Triple-click name to cycle mood
+    let clicks=0, clickTimer;
+    nameEl.addEventListener('click', ()=>{
+      clicks++;
+      clearTimeout(clickTimer);
+      clickTimer=setTimeout(()=>{ if(clicks>=3){ cycleMood(); toast('Mood changed'); } clicks=0; }, 220);
+    });
+
+    // Command palette
+    const palette = document.getElementById('palette');
+    const paletteInput = document.getElementById('paletteInput');
+    const paletteList = document.getElementById('paletteList');
+
+    const commands = [
+      {label:'Theme: Light', run:()=>setTheme('light')},
+      {label:'Theme: Dark', run:()=>setTheme('dark')},
+      {label:'Mood: Default', run:()=>setMood('default')},
+      {label:'Mood: Soft', run:()=>setMood('soft')},
+      {label:'Mood: Mono', run:()=>setMood('mono')},
+      {label:'Mood: Emo', run:()=>setMood('emo')},
+      {label:'Cycle Mood', run:()=>cycleMood()},
+      {label:'Copy Email', run:()=>copyEmail.click()},
+      {label:'Download Markdown', run:()=>downloadMd.click()},
+      {label:'Print to PDF', run:()=>printBtn.click()},
+      {label:'Open GitHub', run:()=>window.open('https://github.com/chakachuu','_blank')},
+      {label:'Open Portfolio', run:()=>window.open('https://chakachuu.github.io/ren','_blank')},
+      {label:'Surprise', run:()=>{ setMood('soft'); hearts(); toast('Soft mode says hi'); }}
+    ];
+
+    function openPalette(){ palette.classList.add('open'); palette.setAttribute('aria-hidden','false'); paletteInput.value=''; renderPalette(commands); paletteInput.focus(); }
+    function closePalette(){ palette.classList.remove('open'); palette.setAttribute('aria-hidden','true'); }
+
+    function renderPalette(items){
+      paletteList.innerHTML='';
+      items.forEach((cmd,i)=>{
+        const li=document.createElement('li');
+        li.textContent=cmd.label;
+        li.setAttribute('role','option');
+        li.setAttribute('aria-selected', i===0);
+        li.onclick=()=>{ cmd.run(); closePalette(); };
+        paletteList.appendChild(li);
+      });
+    }
+
+    let selIndex=0, filtered = commands;
+    function filterPalette(){
+      const q = paletteInput.value.toLowerCase();
+      filtered = commands.filter(c=>c.label.toLowerCase().includes(q));
+      renderPalette(filtered);
+      selIndex=0;
+    }
+    paletteInput.addEventListener('input', filterPalette);
+
+    document.addEventListener('keydown', (e)=>{
+      if((e.metaKey||e.ctrlKey) && e.key.toLowerCase()==='k'){ e.preventDefault(); openPalette(); }
+      if(palette.classList.contains('open')){
+        const items=[...paletteList.querySelectorAll('li')];
+        if(e.key==='Escape'){ closePalette(); }
+        if(e.key==='ArrowDown'){ e.preventDefault(); selIndex=Math.min(selIndex+1, items.length-1); items.forEach((n,i)=>n.setAttribute('aria-selected', i===selIndex)); }
+        if(e.key==='ArrowUp'){ e.preventDefault(); selIndex=Math.max(selIndex-1, 0); items.forEach((n,i)=>n.setAttribute('aria-selected', i===selIndex)); }
+        if(e.key==='Enter'){ e.preventDefault(); items[selIndex]?.click(); }
+      }
+    });
+    palette.addEventListener('click', (e)=>{ if(e.target===palette) closePalette(); });
+
+    // Simple filter: hides sections not matching the text
+    const contentElSections = () => [...contentEl.querySelectorAll('section.card')];
+    filterInput.addEventListener('input', ()=>{
+      const q = filterInput.value.trim().toLowerCase();
+      contentElSections().forEach(sec=>{
+        const text = sec.innerText.toLowerCase();
+        sec.style.display = q && !text.includes(q) ? 'none' : '';
+      });
+    });
+  </script>
 </body>
 </html>
