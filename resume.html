@@ -17,16 +17,75 @@
       --glass: 255, 255, 255, 0.7;
       --shadow: 15, 17, 19;
     }
-    [data-theme="dark"] {
-      --bg: 12, 13, 15;
-      --fg: 240, 241, 245;
-      --muted: 160, 165, 170;
-      --tint: 10, 132, 255;
-      --accent: 94, 92, 230;
-      --card: 28, 29, 34;
-      --glass: 24, 25, 30, 0.45;
-      --shadow: 0, 0, 0;
-    }
+    /* --- Dark mode polish: high-contrast glass, readable text --- */
+[data-theme="dark"] {
+  --bg: 12, 13, 15;
+  --fg: 240, 241, 245;
+  --muted: 190, 195, 200;              /* brighten muted text */
+  --tint: 10, 132, 255;
+  --accent: 94, 92, 230;
+  --card: 32, 33, 38;                  /* darker card surface */
+  --glass: 28, 30, 34, 0.72;           /* darker/translucent glass */
+  --shadow: 0, 0, 0;
+}
+
+/* window frame + chrome */
+[data-theme="dark"] .window {
+  background: rgba(var(--glass));
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 20px 50px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.05);
+}
+[data-theme="dark"] .chrome {
+  background: linear-gradient(to bottom, rgba(44,46,52,.75), rgba(36,38,44,.55));
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+/* cards */
+[data-theme="dark"] .card {
+  background: rgba(var(--card), .88);
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 6px 18px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+/* pills (top chips like email/location/links) */
+[data-theme="dark"] .pill {
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.12);
+  box-shadow: none;
+}
+
+/* chips */
+[data-theme="dark"] .chip {                       /* keep colored, slightly stronger */
+  background: rgba(var(--tint), .20);
+  color: rgb(var(--tint));
+}
+[data-theme="dark"] .chip.muted {
+  background: rgba(255,255,255,.12);
+  color: rgb(var(--fg));
+}
+
+/* links + segmented control */
+[data-theme="dark"] .link { border-bottom-color: rgba(var(--tint), .55); }
+[data-theme="dark"] .segmented {
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.12);
+}
+
+/* command palette panel */
+[data-theme="dark"] .palette .panel {
+  background: rgba(36,37,42,.92);
+  border-color: rgba(255,255,255,.08);
+}
+[data-theme="dark"] .palette input {
+  background: rgba(255,255,255,.06);
+  border-bottom-color: rgba(255,255,255,.08);
+}
+
+/* progress bar looks crisper on dark */
+[data-theme="dark"] .progress {
+  background: linear-gradient(to right, rgba(var(--tint), .85), rgba(var(--accent), 1));
+}
+
     [data-mood="soft"] { --tint: 255, 159, 243; --accent: 255, 107, 129; }
     [data-mood="mono"] { --tint: 180, 180, 180; --accent: 120, 120, 120; filter: grayscale(0.9); }
     [data-mood="emo"]  { --tint: 255, 55, 95;  --accent: 255, 105, 180; }
@@ -221,7 +280,7 @@
             <h2>Profile</h2>
               <div style="display:flex; align-items:center; gap:14px;">
               <div style="width:120px; height:120px; border-radius:50%; overflow:hidden; background:rgba(0,0,0,.08); display:flex; align-items:center; justify-content:center; color:#888; font-size:12px;">
-              <!-- later: <img src="https://i.imgur.com/ZYsHJFq.jpeg" alt="Renaldi Chaka Bagastama" style="width:100%;height:100%;object-fit:cover;" /> -->
+              <img src="https://i.imgur.com/ZYsHJFq.jpeg" alt="Renaldi Chaka Bagastama" style="width:100%;height:100%;object-fit:cover;" />
             </div>
             <!--<p class="muted">Add a professional photo here later. This box is styled and ready to be swapped with your own image.</p>-->
           </div>
@@ -395,6 +454,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // reveal-on-scroll
   $$$('.card').forEach(c=>{
     const io = new IntersectionObserver((entries, obs)=>{
+      if (!('IntersectionObserver' in window)) {
+      document.querySelectorAll('.card').forEach(c => c.classList.add('reveal'));
+      }
       entries.forEach(e=>{ if (e.isIntersecting){ e.target.classList.add('reveal'); obs.unobserve(e.target); }});
     }, {rootMargin:'0px 0px -10% 0px', threshold:.1});
     io.observe(c);
@@ -477,7 +539,8 @@ Robot & Co. Bar & Lounge — Indonesia | Remote/Hybrid | 2020 to 2022
       toast('Markdown downloaded');
     });
   }
-
+  
+  
   // window dots (guarded)
   const red   = $$('.dot.red');
   const yellow= $$('.dot.yellow');
