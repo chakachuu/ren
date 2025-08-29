@@ -320,209 +320,236 @@
   </div>
 
   <script>
-    const root = document.body;
-    const lightBtn = document.getElementById('lightBtn');
-    const darkBtn = document.getElementById('darkBtn');
-    const emailEl = document.getElementById('email');
-    const copyEmail = document.getElementById('copyEmail');
-    const printBtn = document.getElementById('printBtn');
-    const downloadMd = document.getElementById('downloadMd');
-    const nameEl = document.getElementById('name');
-    const splash = document.getElementById('splash');
-    const progress = document.getElementById('progress');
-    const filterInput = document.getElementById('filter');
-    const contentEl = document.getElementById('content');
+document.addEventListener('DOMContentLoaded', () => {
+  // helpers
+  const $ = (id) => document.getElementById(id);
+  const $$ = (sel) => document.querySelector(sel);
+  const $$$ = (sel) => document.querySelectorAll(sel);
 
-    // Splash: quick warm-up
+  const root = document.body;
+  const lightBtn   = $('lightBtn');
+  const darkBtn    = $('darkBtn');
+  const emailEl    = $('email');
+  const copyEmail  = $('copyEmail');
+  const printBtn   = $('printBtn');
+  const downloadMd = $('downloadMd');
+  const nameEl     = $('name');
+  const splash     = $('splash');
+  const progress   = $('progress');
+  const filterInput= $('filter');
+  const contentEl  = $('content');
+
+  // tiny utils
+  const hearts = () => { for (let i=0;i<8;i++){ const h=document.createElement('div'); h.className='heart'; h.textContent='❤'; h.style.left=(Math.random()*80+10)+'vw'; h.style.top=(Math.random()*60+30)+'vh'; h.style.color=getComputedStyle(document.documentElement).getPropertyValue('--tint'); document.body.appendChild(h); setTimeout(()=>h.remove(),1200);} };
+  const toast = (msg) => { const t=document.createElement('div'); t.className='toast'; t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),1600); };
+  const bounce = (el) => { el.classList.add('bounce'); setTimeout(()=>el.classList.remove('bounce'),260); };
+
+  // splash
+  if (splash) {
     window.addEventListener('load', () => {
-      setTimeout(() => splash.classList.add('fade-out'), 500);
-      setTimeout(() => splash.remove(), 1100);
+      setTimeout(()=> splash.classList.add('fade-out'), 500);
+      setTimeout(()=> splash.remove(), 1100);
     });
+  }
 
-    // Scroll progress
-    function updateProgress() {
-      const st = window.scrollY;
-      const dh = document.documentElement.scrollHeight - window.innerHeight;
-      const p = dh > 0 ? st / dh : 0;
-      progress.style.transform = 'scaleX(' + p + ')';
-    }
-    updateProgress();
-    window.addEventListener('scroll', updateProgress);
-    window.addEventListener('resize', updateProgress);
+  // scroll progress
+  const updateProgress = () => {
+    if (!progress) return;
+    const st = window.scrollY;
+    const dh = document.documentElement.scrollHeight - window.innerHeight;
+    const p = dh > 0 ? st / dh : 0;
+    progress.style.transform = `scaleX(${p})`;
+  };
+  updateProgress();
+  window.addEventListener('scroll', updateProgress);
+  window.addEventListener('resize', updateProgress);
 
-    // Theme
-    function setTheme(mode){
-      root.setAttribute('data-theme', mode);
-      lightBtn.setAttribute('aria-pressed', mode==='light');
-      darkBtn.setAttribute('aria-pressed', mode==='dark');
-      localStorage.setItem('theme', mode);
-    }
-    lightBtn.onclick = () => setTheme('light');
-    darkBtn.onclick = () => setTheme('dark');
-    const savedTheme = localStorage.getItem('theme');
-    if(savedTheme) setTheme(savedTheme);
+  // theme + mood
+  const setTheme = (mode) => {
+    root.setAttribute('data-theme', mode);
+    if (lightBtn) lightBtn.setAttribute('aria-pressed', mode==='light');
+    if (darkBtn)  darkBtn.setAttribute('aria-pressed',  mode==='dark');
+    localStorage.setItem('theme', mode);
+  };
+  const moods = ['default','soft','mono','emo'];
+  const setMood = (m) => { root.setAttribute('data-mood', m); localStorage.setItem('mood', m); if (m==='soft') hearts(); };
+  const cycleMood = () => { const cur = root.getAttribute('data-mood') || 'default'; const idx = moods.indexOf(cur); setMood(moods[(idx+1)%moods.length]); };
 
-    // Mood
-    const moods = ['default','soft','mono','emo'];
-    function setMood(m){ root.setAttribute('data-mood', m); localStorage.setItem('mood', m); if(m==='soft') hearts(); }
-    function cycleMood(){ const cur = root.getAttribute('data-mood') || 'default'; const idx = moods.indexOf(cur); setMood(moods[(idx+1)%moods.length]); }
-    const savedMood = localStorage.getItem('mood');
-    if(savedMood) setMood(savedMood);
+  const savedTheme = localStorage.getItem('theme'); if (savedTheme) setTheme(savedTheme);
+  const savedMood  = localStorage.getItem('mood');  if (savedMood)  setMood(savedMood);
 
-    // Reveal on scroll
-    const cards = document.querySelectorAll('.card');
-    const io = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('reveal'); io.unobserve(e.target); } });
-    }, {rootMargin: '0px 0px -10% 0px', threshold: .1});
-    cards.forEach(c=>io.observe(c));
+  if (lightBtn)   lightBtn.addEventListener('click', ()=> setTheme('light'));
+  if (darkBtn)    darkBtn.addEventListener('click',  ()=> setTheme('dark'));
 
-    // Hearts for Soft mood
-    function hearts(){ for(let i=0;i<8;i++){ const h=document.createElement('div'); h.className='heart'; h.textContent='❤'; h.style.left=(Math.random()*80+10)+'vw'; h.style.top=(Math.random()*60+30)+'vh'; h.style.color=getComputedStyle(document.documentElement).getPropertyValue('--tint'); document.body.appendChild(h); setTimeout(()=>h.remove(),1200);} }
+  // reveal-on-scroll
+  $$$('.card').forEach(c=>{
+    const io = new IntersectionObserver((entries, obs)=>{
+      entries.forEach(e=>{ if (e.isIntersecting){ e.target.classList.add('reveal'); obs.unobserve(e.target); }});
+    }, {rootMargin:'0px 0px -10% 0px', threshold:.1});
+    io.observe(c);
+  });
 
-    // Micro helpers
-    function bounce(el){ el.classList.add('bounce'); setTimeout(()=>el.classList.remove('bounce'), 260); }
-    function toast(msg){ const t=document.createElement('div'); t.className='toast'; t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(), 1600); }
+  // copy email / print / markdown
+  if (copyEmail && emailEl) {
+    copyEmail.addEventListener('click', async ()=>{
+      await navigator.clipboard.writeText(emailEl.textContent.trim());
+      bounce(copyEmail); toast('Email copied');
+    });
+  }
+  if (printBtn)   printBtn.addEventListener('click', ()=> window.print());
 
-    // Copy email
-    copyEmail.onclick = async () => { await navigator.clipboard.writeText(emailEl.textContent.trim()); bounce(copyEmail); toast('Email copied'); };
+  const generateMarkdown = () =>
+`# Renaldi Chaka Bagastama
 
-    // Print to PDF
-    printBtn.onclick = () => { window.print(); };
+**Location:** Yerevan, Armenia
 
-    // Generate Markdown
-    function generateMarkdown(){
-      return `# Renaldi Chaka Bagastama\n\n`+
-`**Location:** Yerevan, Armenia\n\n`+
-`**Email:** renaldichakab@gmail.com\n\n`+
-`**GitHub:** github.com/chakachuu\n\n`+
-`**Portfolio:** chakachuu.github.io/ren\n\n`+
-`## About Me\n\n`+
-`I am a front-end developer who cares about design as much as code. I make interfaces that feel clear and simple, with enough detail to feel alive without being overdone. My background is a mix of digital marketing and customer service, so I have had to sell the dream and also deal with the fallout. That taught me how people actually experience products and how to design with empathy instead of buzzwords. My portfolio is not only static—it has a few hidden moods for curious people.\n\n`+
-`## Skills\n\n`+
-`- Front-End: HTML, CSS, JavaScript, TypeScript, React, Tailwind\n`+
-`- UI/UX: Typography, motion, micro-interactions, user flows\n`+
-`- Design & Media: Figma, Photoshop, After Effects, Premiere Pro\n`+
-`- Tools: GitHub, CMS customization\n`+
-`- Approach: Minimal, intentional, performance-minded\n\n`+
-`## Experience\n\n`+
-`**Customer Service Representative**\n`+
-`Trishula Tech — Yerevan, Armenia | On-site | 2024 to Present\n`+
-`- Work with fintech and tech clients\n`+
-`- Turn customer frustration into insights for the team\n`+
-`- Learn what users actually value\n\n`+
-`**Digital Marketing Specialist**\n`+
-`BRINS Insurance — Indonesia | Remote/Hybrid | 2022 to 2023\n`+
-`- Plan and run online campaigns\n`+
-`- Improve brand presence on the web\n`+
-`- Balance safe corporate tone with design that does not look like wallpaper\n\n`+
-`**Digital Marketing Specialist**\n`+
-`Robot & Co. Bar & Lounge — Indonesia | Remote/Hybrid | 2020 to 2022\n`+
-`- Manage digital campaigns for hospitality\n`+
-`- Translate venue vibe into a digital experience\n`+
-`- Learn that even websites need atmosphere\n\n`+
-`## Project\n\n`+
-`**Personal Portfolio Website — chakachuu.github.io/ren**\n`+
-`- Build a portfolio that is clean and very me\n`+
-`- Use React, TypeScript, and Tailwind for a lightweight responsive build\n`+
-`- Focus on typography, layout, and subtle motion\n`+
-`- The site looks simple yet reveals more to explorers\n\n`+
-`## Interests\n\n`+
-`- Interfaces that respect time\n`+
-`- Motion with restraint\n`+
-`- Hidden layers in design\n`+
-`- Collecting small design details\n`;
-    }
+**Email:** renaldichakab@gmail.com
 
-    // Download Markdown
-    downloadMd.onclick = () => {
-      const md = generateMarkdown();
-      const blob = new Blob([md], {type: 'text/markdown'});
+**GitHub:** github.com/chakachuu
+
+**Portfolio:** chakachuu.github.io/ren
+
+## About Me
+
+I build front end experiences that are simple, clear, and carry some personality. I adapt fast and design with empathy, informed by time spent on both the hype side and the support side.
+
+## Skills
+
+- Front End: HTML, CSS, JavaScript (ES6+), TypeScript, React, Tailwind
+- UI UX: Accessibility (WCAG), ARIA, keyboard flows, contrast, micro interactions, typography, user flows
+- Design & Media: Figma, Photoshop, After Effects, Premiere Pro
+- Tools: GitHub, CMS customization
+
+## Experience
+
+**Customer Service Representative**  
+Trishula Tech — Yerevan, Armenia | On site | 2024 to Present
+- Work with fintech and tech clients
+- Turn customer frustration into insights for the team
+- Learn what users actually value
+
+**Digital Marketing Specialist**  
+BRINS Insurance — Indonesia | Remote/Hybrid | 2022 to 2023
+- Plan and run online campaigns
+- Improve brand presence on the web
+- Balance safe corporate tone with design that does not look like wallpaper
+
+**Digital Marketing Specialist**  
+Robot & Co. Bar & Lounge — Indonesia | Remote/Hybrid | 2020 to 2022
+- Manage digital campaigns for hospitality
+- Translate venue vibe into a digital experience
+- Learn that even websites need atmosphere
+
+## Project
+
+**Personal Portfolio Website — chakachuu.github.io/ren**
+- Build a portfolio that is clean and very me
+- Use React, TypeScript, and Tailwind for a lightweight responsive build
+- Focus on typography, layout, and subtle motion
+- The site looks simple yet reveals more to explorers
+
+## Interests
+
+- Interfaces that respect time
+- Motion with restraint
+- Hidden layers in design
+- Collecting small design details
+`;
+
+  if (downloadMd) {
+    downloadMd.addEventListener('click', ()=>{
+      const blob = new Blob([generateMarkdown()], {type:'text/markdown'});
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
       a.download = 'renaldi_resume.md';
       document.body.appendChild(a); a.click(); a.remove();
       toast('Markdown downloaded');
-    };
+    });
+  }
 
-    // Window dots
-    document.querySelector('.dot.red').addEventListener('click', ()=>{ document.getElementById('win').style.transform='scale(.98)'; setTimeout(()=>document.getElementById('win').style.transform='', 140); toast('Nice try'); });
-    document.querySelector('.dot.yellow').addEventListener('click', ()=>{ cycleMood(); toast('Mood toggled'); });
-    document.querySelector('.dot.green').addEventListener('click', ()=>{ setTheme(root.getAttribute('data-theme')==='light'?'dark':'light'); });
+  // window dots (guarded)
+  const red   = $$('.dot.red');
+  const yellow= $$('.dot.yellow');
+  const green = $$('.dot.green');
+  if (red)    red.addEventListener('click', ()=>{ const w=$('win'); if (w){ w.style.transform='scale(.98)'; setTimeout(()=> w.style.transform='', 140);} toast('Nice try'); });
+  if (yellow) yellow.addEventListener('click', ()=>{ cycleMood(); toast('Mood toggled'); });
+  if (green)  green.addEventListener('click', ()=> setTheme(root.getAttribute('data-theme')==='light'?'dark':'light'));
 
-    // Triple-click name to cycle mood
+  // triple-click name to cycle mood
+  if (nameEl) {
     let clicks=0, clickTimer;
     nameEl.addEventListener('click', ()=>{
       clicks++;
       clearTimeout(clickTimer);
-      clickTimer=setTimeout(()=>{ if(clicks>=3){ cycleMood(); toast('Mood changed'); } clicks=0; }, 220);
+      clickTimer = setTimeout(()=>{ if (clicks>=3){ cycleMood(); toast('Mood changed'); } clicks=0; }, 220);
     });
+  }
 
-    // Command palette
-    const palette = document.getElementById('palette');
-    const paletteInput = document.getElementById('paletteInput');
-    const paletteList = document.getElementById('paletteList');
+  // command palette
+  const palette = $('palette');
+  const paletteInput = $('paletteInput');
+  const paletteList  = $('paletteList');
 
-    const commands = [
-      {label:'Theme: Light', run:()=>setTheme('light')},
-      {label:'Theme: Dark', run:()=>setTheme('dark')},
-      {label:'Mood: Default', run:()=>setMood('default')},
-      {label:'Mood: Soft', run:()=>setMood('soft')},
-      {label:'Mood: Mono', run:()=>setMood('mono')},
-      {label:'Mood: Emo', run:()=>setMood('emo')},
-      {label:'Cycle Mood', run:()=>cycleMood()},
-      {label:'Copy Email', run:()=>copyEmail.click()},
-      {label:'Download Markdown', run:()=>downloadMd.click()},
-      {label:'Print to PDF', run:()=>printBtn.click()},
-      {label:'Open GitHub', run:()=>window.open('https://github.com/chakachuu','_blank')},
-      {label:'Open Portfolio', run:()=>window.open('https://chakachuu.github.io/ren','_blank')},
-      {label:'Surprise', run:()=>{ setMood('soft'); hearts(); toast('Soft mode says hi'); }}
-    ];
+  const commands = [
+    {label:'Theme: Light', run:()=>setTheme('light')},
+    {label:'Theme: Dark',  run:()=>setTheme('dark')},
+    {label:'Mood: Default',run:()=>setMood('default')},
+    {label:'Mood: Soft',   run:()=>setMood('soft')},
+    {label:'Mood: Mono',   run:()=>setMood('mono')},
+    {label:'Mood: Emo',    run:()=>setMood('emo')},
+    {label:'Cycle Mood',   run:()=>cycleMood()},
+    {label:'Copy Email',   run:()=> copyEmail?.click()},
+    {label:'Download Markdown', run:()=> downloadMd?.click()},
+    {label:'Print to PDF', run:()=> printBtn?.click()},
+    {label:'Open GitHub',  run:()=> window.open('https://github.com/chakachuu','_blank')},
+    {label:'Open Portfolio',run:()=> window.open('https://chakachuu.github.io/ren','_blank')},
+    {label:'Surprise',     run:()=>{ setMood('soft'); hearts(); toast('Soft mode says hi'); }}
+  ];
 
-    function openPalette(){ palette.classList.add('open'); palette.setAttribute('aria-hidden','false'); paletteInput.value=''; renderPalette(commands); paletteInput.focus(); }
-    function closePalette(){ palette.classList.remove('open'); palette.setAttribute('aria-hidden','true'); }
-
-    function renderPalette(items){
-      paletteList.innerHTML='';
-      items.forEach((cmd,i)=>{
-        const li=document.createElement('li');
-        li.textContent=cmd.label;
-        li.setAttribute('role','option');
-        li.setAttribute('aria-selected', i===0);
-        li.onclick=()=>{ cmd.run(); closePalette(); };
-        paletteList.appendChild(li);
-      });
-    }
-
-    let selIndex=0, filtered = commands;
-    function filterPalette(){
-      const q = paletteInput.value.toLowerCase();
-      filtered = commands.filter(c=>c.label.toLowerCase().includes(q));
-      renderPalette(filtered);
-      selIndex=0;
-    }
-    paletteInput.addEventListener('input', filterPalette);
-
-    document.addEventListener('keydown', (e)=>{
-      if((e.metaKey||e.ctrlKey) && e.key.toLowerCase()==='k'){ e.preventDefault(); openPalette(); }
-      if(palette.classList.contains('open')){
-        const items=[...paletteList.querySelectorAll('li')];
-        if(e.key==='Escape'){ closePalette(); }
-        if(e.key==='ArrowDown'){ e.preventDefault(); selIndex=Math.min(selIndex+1, items.length-1); items.forEach((n,i)=>n.setAttribute('aria-selected', i===selIndex)); }
-        if(e.key==='ArrowUp'){ e.preventDefault(); selIndex=Math.max(selIndex-1, 0); items.forEach((n,i)=>n.setAttribute('aria-selected', i===selIndex)); }
-        if(e.key==='Enter'){ e.preventDefault(); items[selIndex]?.click(); }
-      }
+  const renderPalette = (items) => {
+    if (!paletteList) return;
+    paletteList.innerHTML = '';
+    items.forEach((cmd,i)=>{
+      const li = document.createElement('li');
+      li.textContent = cmd.label;
+      li.setAttribute('role','option');
+      li.setAttribute('aria-selected', i===0);
+      li.onclick = ()=>{ cmd.run(); closePalette(); };
+      paletteList.appendChild(li);
     });
-    palette.addEventListener('click', (e)=>{ if(e.target===palette) closePalette(); });
+  };
+  const openPalette  = ()=>{ if (!palette || !paletteInput) return; palette.classList.add('open'); palette.setAttribute('aria-hidden','false'); paletteInput.value=''; renderPalette(commands); paletteInput.focus(); };
+  const closePalette = ()=>{ if (!palette) return; palette.classList.remove('open'); palette.setAttribute('aria-hidden','true'); };
 
-    // Simple filter: hides sections not matching the text
-    const contentElSections = () => [...contentEl.querySelectorAll('section.card')];
+  if (paletteInput) paletteInput.addEventListener('input', ()=>{
+    const q = paletteInput.value.toLowerCase();
+    const filtered = commands.filter(c=>c.label.toLowerCase().includes(q));
+    renderPalette(filtered);
+  });
+
+  document.addEventListener('keydown', (e)=>{
+    if ((e.metaKey||e.ctrlKey) && e.key.toLowerCase()==='k'){ e.preventDefault(); openPalette(); }
+    if (palette && palette.classList.contains('open')){
+      const items = [...(paletteList?.querySelectorAll('li')||[])];
+      if (e.key==='Escape') closePalette();
+      if (e.key==='ArrowDown'){ e.preventDefault(); let i = items.findIndex(n=>n.getAttribute('aria-selected')==='true'); i = Math.min(i+1, items.length-1); items.forEach((n,ix)=>n.setAttribute('aria-selected', ix===i)); }
+      if (e.key==='ArrowUp'){ e.preventDefault(); let i = items.findIndex(n=>n.getAttribute('aria-selected')==='true'); i = Math.max(i-1, 0); items.forEach((n,ix)=>n.setAttribute('aria-selected', ix===i)); }
+      if (e.key==='Enter'){ e.preventDefault(); const i = items.findIndex(n=>n.getAttribute('aria-selected')==='true'); if (i>=0) items[i].click(); }
+    }
+  });
+  if (palette) palette.addEventListener('click', (e)=>{ if (e.target===palette) closePalette(); });
+
+  // filter box
+  if (filterInput && contentEl) {
     filterInput.addEventListener('input', ()=>{
       const q = filterInput.value.trim().toLowerCase();
-      contentElSections().forEach(sec=>{
+      [...contentEl.querySelectorAll('section.card')].forEach(sec=>{
         const text = sec.innerText.toLowerCase();
         sec.style.display = q && !text.includes(q) ? 'none' : '';
       });
     });
-  </script>
+  }
+});
+</script>
 </body>
 </html>
